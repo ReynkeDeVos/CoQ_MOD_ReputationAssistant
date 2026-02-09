@@ -34,10 +34,14 @@ namespace Kawa.ReputationAssistant
 
         /// <summary>
         /// Appends the section header. Call once before RenderTracker.
+        /// If wrDone is true, appends a water-bonded indicator.
         /// </summary>
-        internal static void RenderSectionHeader(StringBuilder sb)
+        internal static void RenderSectionHeader(StringBuilder sb, bool wrDone)
         {
             sb.Append("\n\n{{K|=== Reputation Assistant ===}}");
+
+            if (wrDone)
+                sb.Append("  {{G|water-bonded}}");
         }
 
         /// <summary>

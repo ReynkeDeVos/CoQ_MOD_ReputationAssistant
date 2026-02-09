@@ -73,7 +73,8 @@ namespace Kawa.ReputationAssistant
                         a.DisplayName, b.DisplayName, StringComparison.OrdinalIgnoreCase);
                 });
 
-                ReputationRenderer.RenderSectionHeader(SB);
+                bool wrDone = go.GetIntProperty("WaterRitualed") > 0;
+                ReputationRenderer.RenderSectionHeader(SB, wrDone);
                 bool showOutcomes = OptionEnabled("OptionRAShowOutcomes");
                 bool compact = OptionEnabled("OptionRACompactLayout");
                 ReputationRenderer.RenderTracker(SB, entries, showOutcomes, compact);
