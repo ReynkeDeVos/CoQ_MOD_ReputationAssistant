@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="utf-8"?>
+<options>
+
+  <!-- ===== Main Settings ===== -->
+  <option ID="OptionRAEnabled"
+          DisplayText="Enable Reputation Assistant"
+          Category="Mod: Reputation Assistant"
+          Type="Checkbox"
+          Default="Yes"
+          SearchKeywords="reputation assistant faction tracker">
+    <helptext>
+      Appends reputation tracking to the look popup for creatures
+      that affect faction reputation (legendaries, named characters).
+      Default: On
+    </helptext>
+  </option>
+
+  <option ID="OptionRAShowOutcomes"
+          DisplayText="Show Water Ritual / Kill Outcomes"
+          Category="Mod: Reputation Assistant"
+          Type="Checkbox"
+          Default="Yes"
+          Requires="OptionRAEnabled==Yes"
+          SearchKeywords="reputation assistant water ritual kill outcomes">
+    <helptext>
+      Show projected reputation after Water Ritual and Kill actions.
+      Disable to show only current rep and target.
+      Default: On
+    </helptext>
+  </option>
+
+  <option ID="OptionRACompactLayout"
+          DisplayText="Compact Layout (single line)"
+          Category="Mod: Reputation Assistant"
+          Type="Checkbox"
+          Default="No"
+          Requires="OptionRAEnabled==Yes"
+          SearchKeywords="reputation assistant compact layout single line">
+    <helptext>
+      Show rep, target, and outcomes on a single line instead of two.
+      Default: Off
+    </helptext>
+  </option>
+
+  <option ID="OptionRAShowFaction"
+          DisplayText="Show Creature Factions"
+          Category="Mod: Reputation Assistant"
+          Type="Checkbox"
+          Default="No"
+          Requires="OptionRAEnabled==Yes"
+          SearchKeywords="reputation assistant faction membership creature show">
+    <helptext>
+      Display the faction memberships of all creatures in the look popup,
+      not just those that affect reputation. Default: Off
+    </helptext>
+  </option>
+
+  <!-- ===== Per-Faction Overrides ===== -->
+  <option ID="OptionRAFaction"
+          DisplayText="Configure Faction"
+          Category="Mod: Reputation Assistant"
+          Type="Combo"
+          Values="(None),Antelopes,Apes,Arachnids,Baboons,Baetyls,Barathrumites,Bears,Birds,Cannibals,Cats,Chavvah,Consortium,Crabs,Cragmensch,Daughters,Dogs,Dromad,Entropic,Equines,Ezra,Farmers,Fish,Flowers,Frogs,Fungi,Girsh,Goatfolk,Gyre Wights,Hermits,Hindren,Insects,Issachari,Joppa,Kyakukya,Mamon,Mechanimists,Merchants,Mollusks,Mopango,Naphtaali,Newly Sentient Beings,Oozes,Pariahs,Prey,Resheph,Robots,Roots,Seekers,Snapjaws,Strangers,Succulents,SultanCult1,SultanCult2,SultanCult3,SultanCult4,SultanCult5,Svardym,Swine,Templar (Mutant),Templar (True Kin),Tortoises,Trees,Trolls,Unshelled Reptiles,Urchins,Vines,Wardens,Water,Winged Mammals,Worms,YdFreehold"
+          Default="(None)"
+          Requires="OptionRAEnabled==Yes"
+          SearchKeywords="reputation assistant faction configure override">
+    <helptext>
+      Select a faction to customize its strategic priority and target reputation.
+      Changes take effect immediately.
+    </helptext>
+  </option>
+
+  <!-- Antelopes (default: 0/6, target -249) -->
+  <option ID="OptionRA_Antelopes_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Antelopes" />
+  <option ID="OptionRA_Antelopes_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Antelopes" />
+
+  <!-- Apes (default: 2/6, target 250) -->
+  <option ID="OptionRA_Apes_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Apes" />
+  <option ID="OptionRA_Apes_Target" DisplayText="  Target Rep [default: 250]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="250" Requires="OptionRAFaction==Apes" />
+
+  <!-- Arachnids (default: 1/6, target -249) -->
+  <option ID="OptionRA_Arachnids_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Arachnids" />
+  <option ID="OptionRA_Arachnids_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Arachnids" />
+
+  <!-- Baboons (default: 1/6, target -249) -->
+  <option ID="OptionRA_Baboons_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Baboons" />
+  <option ID="OptionRA_Baboons_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Baboons" />
+
+  <!-- Baetyls (default: 2/6, target -249) -->
+  <option ID="OptionRA_Baetyls_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Baetyls" />
+  <option ID="OptionRA_Baetyls_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Baetyls" />
+
+  <!-- Barathrumites (default: 2/6, target -249) -->
+  <option ID="OptionRA_Barathrumites_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Barathrumites" />
+  <option ID="OptionRA_Barathrumites_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Barathrumites" />
+
+  <!-- Bears (default: 1/6, target -249) -->
+  <option ID="OptionRA_Bears_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Bears" />
+  <option ID="OptionRA_Bears_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Bears" />
+
+  <!-- Birds (default: 0/6, target -249) -->
+  <option ID="OptionRA_Birds_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Birds" />
+  <option ID="OptionRA_Birds_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Birds" />
+
+  <!-- Cannibals (default: 0/6, target 250) -->
+  <option ID="OptionRA_Cannibals_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Cannibals" />
+  <option ID="OptionRA_Cannibals_Target" DisplayText="  Target Rep [default: 250]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="250" Requires="OptionRAFaction==Cannibals" />
+
+  <!-- Cats (default: 1/6, target -249) -->
+  <option ID="OptionRA_Cats_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Cats" />
+  <option ID="OptionRA_Cats_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Cats" />
+
+  <!-- Chavvah (default: 2/6, target -249) -->
+  <option ID="OptionRA_Chavvah_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Chavvah" />
+  <option ID="OptionRA_Chavvah_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Chavvah" />
+
+  <!-- Consortium (default: 3/6, target 600) -->
+  <option ID="OptionRA_Consortium_Priority" DisplayText="  Priority [default: 3]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="3" Requires="OptionRAFaction==Consortium" />
+  <option ID="OptionRA_Consortium_Target" DisplayText="  Target Rep [default: 600]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="600" Requires="OptionRAFaction==Consortium" />
+
+  <!-- Crabs (default: 4/6, target -249) -->
+  <option ID="OptionRA_Crabs_Priority" DisplayText="  Priority [default: 4]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="4" Requires="OptionRAFaction==Crabs" />
+  <option ID="OptionRA_Crabs_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Crabs" />
+
+  <!-- Cragmensch (default: 1/6, target -249) -->
+  <option ID="OptionRA_Cragmensch_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Cragmensch" />
+  <option ID="OptionRA_Cragmensch_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Cragmensch" />
+
+  <!-- Daughters (default: 3/6, target 100) -->
+  <option ID="OptionRA_Daughters_Priority" DisplayText="  Priority [default: 3]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="3" Requires="OptionRAFaction==Daughters" />
+  <option ID="OptionRA_Daughters_Target" DisplayText="  Target Rep [default: 100]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="100" Requires="OptionRAFaction==Daughters" />
+
+  <!-- Dogs (default: 0/6, target -249) -->
+  <option ID="OptionRA_Dogs_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Dogs" />
+  <option ID="OptionRA_Dogs_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Dogs" />
+
+  <!-- Dromad (default: 2/6, target 600) -->
+  <option ID="OptionRA_Dromad_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Dromad" />
+  <option ID="OptionRA_Dromad_Target" DisplayText="  Target Rep [default: 600]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="600" Requires="OptionRAFaction==Dromad" />
+
+  <!-- Entropic (default: 0/6, target 250) -->
+  <option ID="OptionRA_Entropic_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Entropic" />
+  <option ID="OptionRA_Entropic_Target" DisplayText="  Target Rep [default: 250]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="250" Requires="OptionRAFaction==Entropic" />
+
+  <!-- Equines (default: 0/6, target -249) -->
+  <option ID="OptionRA_Equines_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Equines" />
+  <option ID="OptionRA_Equines_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Equines" />
+
+  <!-- Ezra (default: 3/6, target 150) -->
+  <option ID="OptionRA_Ezra_Priority" DisplayText="  Priority [default: 3]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="3" Requires="OptionRAFaction==Ezra" />
+  <option ID="OptionRA_Ezra_Target" DisplayText="  Target Rep [default: 150]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="150" Requires="OptionRAFaction==Ezra" />
+
+  <!-- Farmers (default: 0/6, target -249) -->
+  <option ID="OptionRA_Farmers_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Farmers" />
+  <option ID="OptionRA_Farmers_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Farmers" />
+
+  <!-- Fish (default: 5/6, target 250) -->
+  <option ID="OptionRA_Fish_Priority" DisplayText="  Priority [default: 5]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="5" Requires="OptionRAFaction==Fish" />
+  <option ID="OptionRA_Fish_Target" DisplayText="  Target Rep [default: 250]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="250" Requires="OptionRAFaction==Fish" />
+
+  <!-- Flowers (default: 5/6, target 250) -->
+  <option ID="OptionRA_Flowers_Priority" DisplayText="  Priority [default: 5]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="5" Requires="OptionRAFaction==Flowers" />
+  <option ID="OptionRA_Flowers_Target" DisplayText="  Target Rep [default: 250]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="250" Requires="OptionRAFaction==Flowers" />
+
+  <!-- Frogs (default: 1/6, target -249) -->
+  <option ID="OptionRA_Frogs_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Frogs" />
+  <option ID="OptionRA_Frogs_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Frogs" />
+
+  <!-- Fungi (default: 2/6, target -249) -->
+  <option ID="OptionRA_Fungi_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Fungi" />
+  <option ID="OptionRA_Fungi_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Fungi" />
+
+  <!-- Girsh (default: 1/6, target 200) -->
+  <option ID="OptionRA_Girsh_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Girsh" />
+  <option ID="OptionRA_Girsh_Target" DisplayText="  Target Rep [default: 200]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="200" Requires="OptionRAFaction==Girsh" />
+
+  <!-- Goatfolk (default: 1/6, target -249) -->
+  <option ID="OptionRA_Goatfolk_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Goatfolk" />
+  <option ID="OptionRA_Goatfolk_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Goatfolk" />
+
+  <!-- Gyre Wights (default: 1/6, target 200) -->
+  <option ID="OptionRA_Gyre_Wights_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Gyre Wights" />
+  <option ID="OptionRA_Gyre_Wights_Target" DisplayText="  Target Rep [default: 200]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="200" Requires="OptionRAFaction==Gyre Wights" />
+
+  <!-- Hermits (default: 2/6, target -249) -->
+  <option ID="OptionRA_Hermits_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Hermits" />
+  <option ID="OptionRA_Hermits_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Hermits" />
+
+  <!-- Hindren (default: 1/6, target -249) -->
+  <option ID="OptionRA_Hindren_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Hindren" />
+  <option ID="OptionRA_Hindren_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Hindren" />
+
+  <!-- Insects (default: 5/6, target -249) -->
+  <option ID="OptionRA_Insects_Priority" DisplayText="  Priority [default: 5]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="5" Requires="OptionRAFaction==Insects" />
+  <option ID="OptionRA_Insects_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Insects" />
+
+  <!-- Issachari (default: 0/6, target -249) -->
+  <option ID="OptionRA_Issachari_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Issachari" />
+  <option ID="OptionRA_Issachari_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Issachari" />
+
+  <!-- Joppa (default: 2/6, target 50) -->
+  <option ID="OptionRA_Joppa_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Joppa" />
+  <option ID="OptionRA_Joppa_Target" DisplayText="  Target Rep [default: 50]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="50" Requires="OptionRAFaction==Joppa" />
+
+  <!-- Kyakukya (default: 3/6, target 100) -->
+  <option ID="OptionRA_Kyakukya_Priority" DisplayText="  Priority [default: 3]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="3" Requires="OptionRAFaction==Kyakukya" />
+  <option ID="OptionRA_Kyakukya_Target" DisplayText="  Target Rep [default: 100]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="100" Requires="OptionRAFaction==Kyakukya" />
+
+  <!-- Mamon (default: 0/6, target -249) -->
+  <option ID="OptionRA_Mamon_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Mamon" />
+  <option ID="OptionRA_Mamon_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Mamon" />
+
+  <!-- Mechanimists (default: 3/6, target 300, special) -->
+  <option ID="OptionRA_Mechanimists_Priority" DisplayText="  Priority [default: 3]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="3" Requires="OptionRAFaction==Mechanimists" />
+  <option ID="OptionRA_Mechanimists_Target" DisplayText="  Target Rep [default: 300]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="300" Requires="OptionRAFaction==Mechanimists" />
+
+  <!-- Merchants (default: 2/6, target 600) -->
+  <option ID="OptionRA_Merchants_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Merchants" />
+  <option ID="OptionRA_Merchants_Target" DisplayText="  Target Rep [default: 600]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="600" Requires="OptionRAFaction==Merchants" />
+
+  <!-- Mollusks (default: 4/6, target -249) -->
+  <option ID="OptionRA_Mollusks_Priority" DisplayText="  Priority [default: 4]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="4" Requires="OptionRAFaction==Mollusks" />
+  <option ID="OptionRA_Mollusks_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Mollusks" />
+
+  <!-- Mopango (default: 2/6, target -249) -->
+  <option ID="OptionRA_Mopango_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Mopango" />
+  <option ID="OptionRA_Mopango_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Mopango" />
+
+  <!-- Naphtaali (default: 5/6, target -249) -->
+  <option ID="OptionRA_Naphtaali_Priority" DisplayText="  Priority [default: 5]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="5" Requires="OptionRAFaction==Naphtaali" />
+  <option ID="OptionRA_Naphtaali_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Naphtaali" />
+
+  <!-- Newly Sentient Beings (default: 0/6, target -249) -->
+  <option ID="OptionRA_Newly_Sentient_Beings_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Newly Sentient Beings" />
+  <option ID="OptionRA_Newly_Sentient_Beings_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Newly Sentient Beings" />
+
+  <!-- Oozes (default: 6/6, target -249) -->
+  <option ID="OptionRA_Oozes_Priority" DisplayText="  Priority [default: 6]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="6" Requires="OptionRAFaction==Oozes" />
+  <option ID="OptionRA_Oozes_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Oozes" />
+
+  <!-- Pariahs (default: 2/6, target 100) -->
+  <option ID="OptionRA_Pariahs_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Pariahs" />
+  <option ID="OptionRA_Pariahs_Target" DisplayText="  Target Rep [default: 100]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="100" Requires="OptionRAFaction==Pariahs" />
+
+  <!-- Prey (default: 2/6, target -249) -->
+  <option ID="OptionRA_Prey_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Prey" />
+  <option ID="OptionRA_Prey_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Prey" />
+
+  <!-- Resheph (default: 2/6, target 100) -->
+  <option ID="OptionRA_Resheph_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Resheph" />
+  <option ID="OptionRA_Resheph_Target" DisplayText="  Target Rep [default: 100]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="100" Requires="OptionRAFaction==Resheph" />
+
+  <!-- Robots (default: 6/6, target -249) -->
+  <option ID="OptionRA_Robots_Priority" DisplayText="  Priority [default: 6]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="6" Requires="OptionRAFaction==Robots" />
+  <option ID="OptionRA_Robots_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Robots" />
+
+  <!-- Roots (default: 0/6, target -249) -->
+  <option ID="OptionRA_Roots_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Roots" />
+  <option ID="OptionRA_Roots_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Roots" />
+
+  <!-- Seekers (default: 6/6, target -249) -->
+  <option ID="OptionRA_Seekers_Priority" DisplayText="  Priority [default: 6]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="6" Requires="OptionRAFaction==Seekers" />
+  <option ID="OptionRA_Seekers_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Seekers" />
+
+  <!-- Snapjaws (default: 0/6, target -249) -->
+  <option ID="OptionRA_Snapjaws_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Snapjaws" />
+  <option ID="OptionRA_Snapjaws_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Snapjaws" />
+
+  <!-- Strangers (default: 2/6, target -249) -->
+  <option ID="OptionRA_Strangers_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Strangers" />
+  <option ID="OptionRA_Strangers_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Strangers" />
+
+  <!-- Succulents (default: 0/6, target -600) -->
+  <option ID="OptionRA_Succulents_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Succulents" />
+  <option ID="OptionRA_Succulents_Target" DisplayText="  Target Rep [default: -600]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-600" Requires="OptionRAFaction==Succulents" />
+
+  <!-- SultanCult1 (default: 1/6, target 250) -->
+  <option ID="OptionRA_SultanCult1_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==SultanCult1" />
+  <option ID="OptionRA_SultanCult1_Target" DisplayText="  Target Rep [default: 250]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="250" Requires="OptionRAFaction==SultanCult1" />
+
+  <!-- SultanCult2 (default: 1/6, target 250) -->
+  <option ID="OptionRA_SultanCult2_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==SultanCult2" />
+  <option ID="OptionRA_SultanCult2_Target" DisplayText="  Target Rep [default: 250]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="250" Requires="OptionRAFaction==SultanCult2" />
+
+  <!-- SultanCult3 (default: 1/6, target 250) -->
+  <option ID="OptionRA_SultanCult3_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==SultanCult3" />
+  <option ID="OptionRA_SultanCult3_Target" DisplayText="  Target Rep [default: 250]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="250" Requires="OptionRAFaction==SultanCult3" />
+
+  <!-- SultanCult4 (default: 1/6, target 250) -->
+  <option ID="OptionRA_SultanCult4_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==SultanCult4" />
+  <option ID="OptionRA_SultanCult4_Target" DisplayText="  Target Rep [default: 250]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="250" Requires="OptionRAFaction==SultanCult4" />
+
+  <!-- SultanCult5 (default: 1/6, target 250) -->
+  <option ID="OptionRA_SultanCult5_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==SultanCult5" />
+  <option ID="OptionRA_SultanCult5_Target" DisplayText="  Target Rep [default: 250]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="250" Requires="OptionRAFaction==SultanCult5" />
+
+  <!-- Svardym (default: 5/6, target -249) -->
+  <option ID="OptionRA_Svardym_Priority" DisplayText="  Priority [default: 5]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="5" Requires="OptionRAFaction==Svardym" />
+  <option ID="OptionRA_Svardym_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Svardym" />
+
+  <!-- Swine (default: 0/6, target -249) -->
+  <option ID="OptionRA_Swine_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Swine" />
+  <option ID="OptionRA_Swine_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Swine" />
+
+  <!-- Templar / Mutant (default: 1/6 Low-Threat, target -249) -->
+  <option ID="OptionRA_Templar_Mutant_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Templar (Mutant)" />
+  <option ID="OptionRA_Templar_Mutant_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Templar (Mutant)" />
+
+  <!-- Templar / True Kin (default: 2/6 Maintain, target -249) -->
+  <option ID="OptionRA_Templar_TrueKin_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==Templar (True Kin)" />
+  <option ID="OptionRA_Templar_TrueKin_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Templar (True Kin)" />
+
+  <!-- Tortoises (default: 1/6, target 250) -->
+  <option ID="OptionRA_Tortoises_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Tortoises" />
+  <option ID="OptionRA_Tortoises_Target" DisplayText="  Target Rep [default: 250]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="250" Requires="OptionRAFaction==Tortoises" />
+
+  <!-- Trees (default: 1/6, target 250) -->
+  <option ID="OptionRA_Trees_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Trees" />
+  <option ID="OptionRA_Trees_Target" DisplayText="  Target Rep [default: 250]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="250" Requires="OptionRAFaction==Trees" />
+
+  <!-- Trolls (default: 1/6, target -249) -->
+  <option ID="OptionRA_Trolls_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Trolls" />
+  <option ID="OptionRA_Trolls_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Trolls" />
+
+  <!-- Unshelled Reptiles (default: 5/6, target -249) -->
+  <option ID="OptionRA_Unshelled_Reptiles_Priority" DisplayText="  Priority [default: 5]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="5" Requires="OptionRAFaction==Unshelled Reptiles" />
+  <option ID="OptionRA_Unshelled_Reptiles_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Unshelled Reptiles" />
+
+  <!-- Urchins (default: 1/6, target -249) -->
+  <option ID="OptionRA_Urchins_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Urchins" />
+  <option ID="OptionRA_Urchins_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Urchins" />
+
+  <!-- Vines (default: 1/6, target -249) -->
+  <option ID="OptionRA_Vines_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Vines" />
+  <option ID="OptionRA_Vines_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Vines" />
+
+  <!-- Wardens (default: 3/6, target 0) -->
+  <option ID="OptionRA_Wardens_Priority" DisplayText="  Priority [default: 3]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="3" Requires="OptionRAFaction==Wardens" />
+  <option ID="OptionRA_Wardens_Target" DisplayText="  Target Rep [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="0" Requires="OptionRAFaction==Wardens" />
+
+  <!-- Water (default: 0/6, target -600) -->
+  <option ID="OptionRA_Water_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Water" />
+  <option ID="OptionRA_Water_Target" DisplayText="  Target Rep [default: -600]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-600" Requires="OptionRAFaction==Water" />
+
+  <!-- Winged Mammals (default: 4/6, target 250) -->
+  <option ID="OptionRA_Winged_Mammals_Priority" DisplayText="  Priority [default: 4]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="4" Requires="OptionRAFaction==Winged Mammals" />
+  <option ID="OptionRA_Winged_Mammals_Target" DisplayText="  Target Rep [default: 250]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="250" Requires="OptionRAFaction==Winged Mammals" />
+
+  <!-- Worms (default: 1/6, target -249) -->
+  <option ID="OptionRA_Worms_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Worms" />
+  <option ID="OptionRA_Worms_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Worms" />
+
+  <!-- YdFreehold (default: 2/6, target -249) -->
+  <option ID="OptionRA_YdFreehold_Priority" DisplayText="  Priority [default: 2]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="2" Requires="OptionRAFaction==YdFreehold" />
+  <option ID="OptionRA_YdFreehold_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==YdFreehold" />
+
+</options>

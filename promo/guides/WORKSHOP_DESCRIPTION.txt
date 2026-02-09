@@ -1,0 +1,48 @@
+I got tired of tracking my reputation across dozens of factions by digging through the reputation list before deciding whether to Water Ritual, fight, or flee.
+
+Reputation Assistant adds a readout directly to the creature inspection popup for any creature that participates in the reputation system (legendaries, named characters, anyone with the "GivesRep" part).
+
+[h1]SPOILER WARNING[/h1]
+
+[b]Do not use this for the first few playthroughs![/b] The priority/target guidance is based on a heavily opinionated list and contains spoilers.
+
+[h1]What It Shows[/h1]
+
+For each faction associated with the creature:
+
+[code]
+  [5/6 High Priority] Insects
+    Rep: -100  Target: -249
+    WR +50 = -50   Kill -50 = -150
+[/code]
+
+• [b]Priority tier[/b] (0–6) — how strategically important the faction is, based on A-F-F-I-N-E's [url=https://www.qudzoo.com/advice/reputation]qudzoo.com reputation guide[/url]
+• [b]Rep vs target[/b] — your current rep compared to your target reputation (the minimum threshold you want to stay above).
+• [b]WR / Kill outcomes[/b] — see the exact projected reputation after Water Ritual or Kill, color-coded by safety
+
+[h1]Highly Recommended Companion Mod[/h1]
+
+This mod helps you decide what to do once you find someone important. To help you [i]to be aware[/i] of legendaries in the first place, install [b][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3507307896]You Spot a Legendary![/url][/b] by Cattlesquat (announces legendaries and auto-journals them).
+
+[h1]Customizable[/h1]
+
+All settings are in the in-game options menu under [b]Mod: Reputation Assistant[/b]:
+
+• Enable/disable the mod
+• Toggle WR/Kill outcome display
+• Compact layout option (single line per faction)
+• Show character's own faction next to its name (default: off)
+
+Defaults come from qudzoo.com, but every player disagrees on which factions matter most. Tune them to your playstyle directly from the options menu.
+
+• In the options menu, select any faction to override its priority and target reputation.
+
+[h1]Details[/h1]
+
+• Works with new and existing saves
+• Safe to add or remove at any time — stores no persistent data
+• Only appends text to the look popup (doesn't change gameplay)
+
+Source code and more detailed description: [url=https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant]GitHub[/url]
+
+[i]Live and drink, friend.[/i]
