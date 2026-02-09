@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Option to display the character's own faction next to its name in the inspection popup (default: off)
+- Water-bonded indicator on the section header when a Water Ritual has already been performed with the creature
 
 ### Changed
 
