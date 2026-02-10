@@ -16,9 +16,13 @@ For each faction associated with the creature:
     WR +50 = -50   Kill -50 = -150
 [/code]
 
-• [b]Priority tier[/b] (0–6) — how strategically important the faction is, based on A-F-F-I-N-E's [url=https://www.qudzoo.com/advice/reputation]qudzoo.com reputation guide[/url]
-• [b]Rep vs target[/b] — your current rep compared to your target reputation (the minimum threshold you want to stay above).
-• [b]WR / Kill outcomes[/b] — see the exact projected reputation after Water Ritual or Kill, color-coded by safety
+Priority tiers and target values come from A-F-F-I-N-E's [url=https://www.qudzoo.com/advice/reputation]qudzoo.com reputation guide[/url].
+
+[b]Line 1[/b] — Priority tier (0–6, color-coded by urgency) and faction name.
+
+[b]Line 2[/b] — Your current reputation (green if at/above target, red if below) and the strategic target — the minimum reputation threshold you want to stay above.
+
+[b]Line 3[/b] — What happens if you do the Water Ritual or Kill. The resulting reputation is green if it stays at or above the target, and red if it drops below the target or moves further away from it.
 
 [h1]Highly Recommended Companion Mod[/h1]
 
