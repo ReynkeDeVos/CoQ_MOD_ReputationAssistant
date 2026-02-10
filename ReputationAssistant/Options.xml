@@ -50,8 +50,7 @@
           Requires="OptionRAEnabled==Yes"
           SearchKeywords="reputation assistant faction membership creature show">
     <helptext>
-      Display the faction memberships of all creatures in the look popup,
-      not just those that affect reputation. Default: Off
+      Display each creature's primary faction in the look popup description. Default: Off
     </helptext>
   </option>
 

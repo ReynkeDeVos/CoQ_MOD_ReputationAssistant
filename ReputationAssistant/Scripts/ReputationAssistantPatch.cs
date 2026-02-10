@@ -3,8 +3,7 @@
 //
 // Postfix-patches Description.GetLongDescription to append a reputation
 // tracker showing priority, current/target rep, and WR/Kill projections.
-// Also patches GameObject.GetDisplayName to display creature factions
-// as a tag after the creature name.
+// Also displays the creature's primary faction in the look popup.
 //
 // Reputation mechanics: https://wiki.cavesofqud.com/wiki/Reputation
 // Color codes: https://wiki.cavesofqud.com/wiki/Modding:Colors_%26_Object_Rendering
@@ -12,8 +11,6 @@
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using XRL.Core;
@@ -55,6 +52,9 @@ namespace Kawa.ReputationAssistant
                 var go = __instance.ParentObject;
                 if (go == null) return;
 
+                if (XRL.UI.Look.LookingAt != go) return;
+
+
                 var givesRep = go.GetPart<GivesRep>();
                 if (givesRep == null) return;
 
@@ -74,7 +74,22 @@ namespace Kawa.ReputationAssistant
                 });
 
                 bool wrDone = go.GetIntProperty("WaterRitualed") > 0;
-                ReputationRenderer.RenderSectionHeader(SB, wrDone);
+
+                // Resolve faction header when option is on
+                string factionHeader = null;
+                if (OptionEnabled("OptionRAShowFaction"))
+                {
+                    string fName = go.GetPrimaryFaction();
+                    if (!string.IsNullOrEmpty(fName))
+                    {
+                        var fObj = Factions.GetIfExists(fName);
+                        if (fObj != null && fObj.Visible)
+                            factionHeader = !string.IsNullOrEmpty(fObj.DisplayName)
+                                ? fObj.DisplayName : fName;
+                    }
+                }
+
+                ReputationRenderer.RenderSectionHeader(SB, wrDone, factionHeader);
                 bool showOutcomes = OptionEnabled("OptionRAShowOutcomes");
                 bool compact = OptionEnabled("OptionRACompactLayout");
                 ReputationRenderer.RenderTracker(SB, entries, showOutcomes, compact);
@@ -206,49 +221,5 @@ namespace Kawa.ReputationAssistant
         internal static bool OptionEnabled(string id) =>
             Options.GetOption(id, "Yes")
                 .Equals("Yes", StringComparison.OrdinalIgnoreCase);
-    }
-
-    // ── Faction display (added as tag after creature name, like Fyrefly's Visible Factions) ──
-
-    [HarmonyPatch]
-    static class FactionDisplayPatch
-    {
-        static MethodBase TargetMethod()
-        {
-            // GetDisplayName has multiple overloads; pick the one with the most parameters
-            // (the full-featured version that other overloads delegate to)
-            return typeof(GameObject)
-                .GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                .Where(m => m.Name == "GetDisplayName")
-                .OrderByDescending(m => m.GetParameters().Length)
-                .First();
-        }
-
-        public static void Postfix(GameObject __instance, ref string __result)
-        {
-            try
-            {
-                if (!ReputationAssistantPatch.OptionEnabled("OptionRAEnabled")) return;
-                if (!ReputationAssistantPatch.OptionEnabled("OptionRAShowFaction")) return;
-                if (__instance == null || __instance.IsPlayer()) return;
-
-                string factionName = __instance.GetPrimaryFaction();
-                if (string.IsNullOrEmpty(factionName)) return;
-
-                var faction = Factions.GetIfExists(factionName);
-                if (faction == null || !faction.Visible) return;
-
-                string display = faction.DisplayName;
-                if (string.IsNullOrEmpty(display))
-                    display = factionName;
-
-                __result += " {{K|(" + display + ")}}";
-            }
-            catch (Exception ex)
-            {
-                UnityEngine.Debug.Log(
-                    $"[ReputationAssistant] {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}");
-            }
-        }
     }
 }
