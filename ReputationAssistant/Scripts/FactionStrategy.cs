@@ -6,21 +6,17 @@
 
 using System;
 using System.Collections.Generic;
-using XRL;
 
 namespace Kawa.ReputationAssistant
 {
-    [HasModSensitiveStaticCache]
     static class FactionStrategy
     {
-        [ModSensitiveStaticCache]
-        internal static Dictionary<string, Entry> Table;
+        internal static readonly Dictionary<string, Entry> Table;
 
         internal const int DefaultTarget = -249;
         internal const int DefaultImportance = 1;
 
-        [ModSensitiveCacheInit]
-        internal static void Init()
+        static FactionStrategy()
         {
             Table = new(StringComparer.OrdinalIgnoreCase);
 
@@ -112,19 +108,21 @@ namespace Kawa.ReputationAssistant
 
         static void Add(string name, int target, int importance, bool special = false)
         {
-            Table[name] = new()
-            {
-                Target = target,
-                Importance = importance,
-                IsSpecial = special,
-            };
+            Table[name] = new Entry(target, importance, special);
         }
 
-        internal struct Entry
+        internal readonly struct Entry
         {
-            public int Target;
-            public int Importance;
-            public bool IsSpecial;
+            public readonly int Target;
+            public readonly int Importance;
+            public readonly bool IsSpecial;
+
+            public Entry(int target, int importance, bool isSpecial)
+            {
+                Target = target;
+                Importance = importance;
+                IsSpecial = isSpecial;
+            }
         }
     }
 }
