@@ -126,7 +126,7 @@ namespace Kawa.ReputationAssistant
             string clean = FactionResolver.StripMarkup(raw);
             var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (string line in clean.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (string line in clean.Split('\n', StringSplitOptions.RemoveEmptyEntries))
             {
                 string trimmed = line.Trim();
                 if (trimmed.Length == 0) continue;
@@ -204,7 +204,7 @@ namespace Kawa.ReputationAssistant
             if (key == "Templar")
                 key = PlayerIsTrueKin() ? "Templar_TrueKin" : "Templar_Mutant";
 
-            string prefix = string.Concat("OptionRA_", key, "_");
+            string prefix = $"OptionRA_{key}_";
 
             string pri = Options.GetOption(prefix + "Priority");
             if (!string.IsNullOrEmpty(pri) && int.TryParse(pri, out int p))
