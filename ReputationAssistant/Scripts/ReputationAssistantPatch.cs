@@ -41,6 +41,14 @@ namespace Kawa.ReputationAssistant
             @"(Loved|Admired|Liked|Disliked|Hated) by (.+?)(?:\s+for\s+.+)?\.?\s*$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
+        // Sort: highest priority first, then alphabetical
+        static readonly Comparison<FactionEntry> EntryComparer = (a, b) =>
+        {
+            int cmp = b.Importance.CompareTo(a.Importance);
+            return cmp != 0 ? cmp : string.Compare(
+                a.DisplayName, b.DisplayName, StringComparison.OrdinalIgnoreCase);
+        };
+
         // ── Harmony entry point ─────────────────────────────────────────
 
         public static void Postfix(Description __instance, StringBuilder SB)
@@ -52,30 +60,7 @@ namespace Kawa.ReputationAssistant
                 var go = __instance.ParentObject;
                 if (go == null) return;
 
-                if (XRL.UI.Look.LookingAt != go) return;
-
-
-                var givesRep = go.GetPart<GivesRep>();
-                if (givesRep == null) return;
-
-                // Reputation tracker — append at bottom
-                var playerRep = XRLCore.Core?.Game?.PlayerReputation;
-                if (playerRep == null) return;
-
-                var entries = ParseEntries(givesRep, playerRep);
-                if (entries.Count == 0) return;
-
-                // Sort: highest priority first, then alphabetical
-                entries.Sort((a, b) =>
-                {
-                    int cmp = b.Importance.CompareTo(a.Importance);
-                    return cmp != 0 ? cmp : string.Compare(
-                        a.DisplayName, b.DisplayName, StringComparison.OrdinalIgnoreCase);
-                });
-
-                bool wrDone = go.GetIntProperty("WaterRitualed") > 0;
-
-                // Resolve faction header when option is on
+                // Resolve faction name for any creature
                 string factionHeader = null;
                 if (OptionEnabled("OptionRAShowFaction"))
                 {
@@ -89,10 +74,36 @@ namespace Kawa.ReputationAssistant
                     }
                 }
 
+                // Reputation tracker — only for creatures that give rep
+                var givesRep = go.GetPart<GivesRep>();
+                var playerRep = XRLCore.Core?.Game?.PlayerReputation;
+                List<FactionEntry> entries = null;
+
+                if (givesRep != null && playerRep != null)
+                {
+                    entries = ParseEntries(givesRep, playerRep);
+                    if (entries.Count > 0)
+                    {
+                        entries.Sort(EntryComparer);
+                    }
+                    else
+                    {
+                        entries = null;
+                    }
+                }
+
+                // Nothing to show at all
+                if (factionHeader == null && entries == null) return;
+
+                bool wrDone = go.GetIntProperty("WaterRitualed") > 0;
                 ReputationRenderer.RenderSectionHeader(SB, wrDone, factionHeader);
-                bool showOutcomes = OptionEnabled("OptionRAShowOutcomes");
-                bool compact = OptionEnabled("OptionRACompactLayout");
-                ReputationRenderer.RenderTracker(SB, entries, showOutcomes, compact);
+
+                if (entries != null)
+                {
+                    bool showOutcomes = OptionEnabled("OptionRAShowOutcomes");
+                    bool compact = OptionEnabled("OptionRACompactLayout");
+                    ReputationRenderer.RenderTracker(SB, entries, showOutcomes, compact);
+                }
             }
             catch (Exception ex)
             {
@@ -115,10 +126,10 @@ namespace Kawa.ReputationAssistant
             string clean = FactionResolver.StripMarkup(raw);
             var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (string line in clean.Split('\n'))
+            foreach (string line in clean.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 string trimmed = line.Trim();
-                if (string.IsNullOrEmpty(trimmed)) continue;
+                if (trimmed.Length == 0) continue;
 
                 var match = ReputationLine.Match(trimmed);
                 if (!match.Success) continue;
@@ -143,8 +154,7 @@ namespace Kawa.ReputationAssistant
             int importance = FactionStrategy.DefaultImportance;
             bool isSpecial = false;
 
-            if (FactionStrategy.Table != null &&
-                FactionStrategy.Table.TryGetValue(internalName, out var strat))
+            if (FactionStrategy.Table.TryGetValue(internalName, out var strat))
             {
                 target = strat.Target;
                 importance = strat.Importance;
@@ -173,17 +183,10 @@ namespace Kawa.ReputationAssistant
                     displayName = faction.DisplayName;
             }
 
-            return new FactionEntry
-            {
-                DisplayName = displayName,
-                InternalName = internalName,
-                CurrentRep = currentRep,
-                TargetRep = target,
-                Importance = importance,
-                IsSpecial = isSpecial,
-                WRChange = wrChange,
-                KillChange = killChange,
-            };
+            return new FactionEntry(
+                displayName, internalName,
+                currentRep, target, importance, isSpecial,
+                wrChange, killChange);
         }
 
         /// <summary>
@@ -201,11 +204,13 @@ namespace Kawa.ReputationAssistant
             if (key == "Templar")
                 key = PlayerIsTrueKin() ? "Templar_TrueKin" : "Templar_Mutant";
 
-            string pri = Options.GetOption("OptionRA_" + key + "_Priority");
+            string prefix = string.Concat("OptionRA_", key, "_");
+
+            string pri = Options.GetOption(prefix + "Priority");
             if (!string.IsNullOrEmpty(pri) && int.TryParse(pri, out int p))
                 importance = Math.Max(0, Math.Min(p, 6));
 
-            string tgt = Options.GetOption("OptionRA_" + key + "_Target");
+            string tgt = Options.GetOption(prefix + "Target");
             if (!string.IsNullOrEmpty(tgt) && int.TryParse(tgt, out int t))
                 target = t;
         }

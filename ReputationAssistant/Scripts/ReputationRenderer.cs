@@ -28,7 +28,7 @@ namespace Kawa.ReputationAssistant
         };
 
         // Escalating visibility: brown → grey → teal → gold → orange → magenta → red
-        static readonly string[] TierColors = ["w", "y", "c", "W", "O", "M", "R"];
+        static readonly string[] TierColors = {"w", "y", "c", "W", "O", "M", "R"};
 
         // ── Public API ──────────────────────────────────────────────────
 
@@ -38,10 +38,9 @@ namespace Kawa.ReputationAssistant
         /// </summary>
         internal static void RenderSectionHeader(StringBuilder sb, bool wrDone, string factionHeader = null)
         {
-            string title = string.IsNullOrEmpty(factionHeader)
-                ? "Reputation Assistant"
-                : factionHeader;
-            sb.Append("\n\n{{K|=== " + title + " ===}}");
+            sb.Append("\n\n{{K|=== ")
+              .Append(string.IsNullOrEmpty(factionHeader) ? "Reputation Assistant" : factionHeader)
+              .Append(" ===}}");
 
             if (wrDone)
                 sb.Append("  {{G|water-bonded}}");
