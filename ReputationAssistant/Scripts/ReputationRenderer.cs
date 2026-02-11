@@ -124,10 +124,10 @@ namespace Kawa.ReputationAssistant
             if (!showOutcomes) return;
 
             sb.Append('\n');
-            sb.Append("    WR ").Append(Pad(e.WRChange))
+            sb.Append("    WR ").Append(SignedPad(e.WRChange))
               .Append(" = {{").Append(e.IsWRSafe ? "G" : "R").Append("|")
               .Append(Pad(e.WRResult)).Append("}}");
-            sb.Append("  {{K|\u2502}}  Kill ").Append(Pad(e.KillChange))
+            sb.Append("  {{K|\u2502}}  Kill ").Append(SignedPad(e.KillChange))
               .Append(" = {{").Append(e.IsKillSafe ? "G" : "R").Append("|")
               .Append(Pad(e.KillResult)).Append("}}");
         }
@@ -136,5 +136,9 @@ namespace Kawa.ReputationAssistant
 
         /// <summary>Right-aligns a number to 4 characters (e.g. "  50", "-600").</summary>
         static string Pad(int value) => value.ToString().PadLeft(4);
+
+        /// <summary>Right-aligns with explicit sign (e.g. " +50", "-100").</summary>
+        static string SignedPad(int value) =>
+            (value >= 0 ? "+" + value : value.ToString()).PadLeft(4);
     }
 }
