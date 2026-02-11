@@ -12,7 +12,6 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Text.RegularExpressions;
 using XRL.Core;
 using XRL.UI;
 using XRL.World;
@@ -35,12 +34,6 @@ namespace Kawa.ReputationAssistant
             { "Hated",    (-100, +100) },
         };
 
-        // Parses: "Admired by the Farmers' Guild for telling bawdy jokes."
-        // Group 1 = relationship, Group 2 = faction name (strips "for ..." suffix)
-        static readonly Regex ReputationLine = new(
-            @"(Loved|Admired|Liked|Disliked|Hated) by (.+?)(?:\s+for\s+.+)?\.?\s*$",
-            RegexOptions.Compiled | RegexOptions.IgnoreCase);
-
         // Sort: highest priority first, then alphabetical
         static readonly Comparison<FactionEntry> EntryComparer = (a, b) =>
         {
@@ -48,6 +41,9 @@ namespace Kawa.ReputationAssistant
             return cmp != 0 ? cmp : string.Compare(
                 a.DisplayName, b.DisplayName, StringComparison.OrdinalIgnoreCase);
         };
+
+        static DateTime NextErrorLogAtUtc = DateTime.MinValue;
+        static int SuppressedErrorCount;
 
         // ── Harmony entry point ─────────────────────────────────────────
 
@@ -107,8 +103,21 @@ namespace Kawa.ReputationAssistant
             }
             catch (Exception ex)
             {
+                var now = DateTime.UtcNow;
+                if (now < NextErrorLogAtUtc)
+                {
+                    SuppressedErrorCount++;
+                    return;
+                }
+
+                string suppressed = SuppressedErrorCount > 0
+                    ? $" (suppressed {SuppressedErrorCount} similar errors)"
+                    : string.Empty;
+                SuppressedErrorCount = 0;
+                NextErrorLogAtUtc = now.AddSeconds(30);
+
                 UnityEngine.Debug.Log(
-                    $"[ReputationAssistant] {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}");
+                    $"[ReputationAssistant]{suppressed} {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}");
             }
         }
 
@@ -125,20 +134,28 @@ namespace Kawa.ReputationAssistant
 
             string clean = FactionResolver.StripMarkup(raw);
             var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var resolveCache = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (string line in clean.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
+            string ResolveCached(string value)
             {
-                string trimmed = line.Trim();
-                if (trimmed.Length == 0) continue;
+                if (string.IsNullOrEmpty(value))
+                    return null;
 
-                var match = ReputationLine.Match(trimmed);
-                if (!match.Success) continue;
+                if (resolveCache.TryGetValue(value, out string cached))
+                    return cached;
 
-                string relationship = match.Groups[1].Value;
-                string rawName = match.Groups[2].Value.Trim();
+                string resolved = FactionResolver.Resolve(value);
+                resolveCache[value] = resolved;
+                return resolved;
+            }
+
+            foreach (var line in ReputationTextParser.ParseRelationshipLines(clean))
+            {
+                string relationship = line.Relationship;
+                string rawName = line.RawFactionNames;
 
                 // Try full name first (handles factions with "and" in their name)
-                string singleResolve = FactionResolver.Resolve(rawName);
+                string singleResolve = ResolveCached(rawName);
                 if (singleResolve != null)
                 {
                     if (seen.Add(singleResolve))
@@ -147,9 +164,9 @@ namespace Kawa.ReputationAssistant
                 else
                 {
                     // Game combines factions: "Admired by goatfolk and pariahs"
-                    foreach (string name in SplitFactionNames(rawName))
+                    foreach (string name in ReputationTextParser.SplitFactionNames(rawName, ResolveCached))
                     {
-                        string internalName = FactionResolver.Resolve(name);
+                        string internalName = ResolveCached(name);
                         if (internalName == null || !seen.Add(internalName)) continue;
 
                         entries.Add(BuildEntry(internalName, name, relationship, playerRep));
@@ -176,7 +193,7 @@ namespace Kawa.ReputationAssistant
             }
 
             // In-game option overrides
-            ApplyOptionOverrides(internalName, ref importance, ref target);
+            FactionOptionOverrides.Apply(internalName, ref importance, ref target);
 
             // Reputation change from relationship
             int wrChange = 0, killChange = 0;
@@ -203,103 +220,7 @@ namespace Kawa.ReputationAssistant
                 wrChange, killChange);
         }
 
-        /// <summary>
-        /// Reads per-faction Priority/Target overrides from in-game options.
-        /// Option IDs: OptionRA_{key}_Priority, OptionRA_{key}_Target
-        ///
-        /// Special case: Putus Templar has separate options for Mutant and
-        /// True Kin genotypes, since the qudzoo guide rates them differently.
-        /// </summary>
-        static void ApplyOptionOverrides(string internalName, ref int importance, ref int target)
-        {
-            string key = internalName.Replace(" ", "_");
-
-            // Templar priority depends on player genotype
-            if (key == "Templar")
-                key = PlayerIsTrueKin() ? "Templar_TrueKin" : "Templar_Mutant";
-
-            string prefix = $"OptionRA_{key}_";
-
-            string pri = Options.GetOption(prefix + "Priority");
-            if (!string.IsNullOrEmpty(pri) && int.TryParse(pri, out int p))
-                importance = Math.Max(0, Math.Min(p, 6));
-
-            string tgt = Options.GetOption(prefix + "Target");
-            if (!string.IsNullOrEmpty(tgt) && int.TryParse(tgt, out int t))
-                target = t;
-        }
-
-        // ── Helpers ─────────────────────────────────────────────────────
-
-        /// <summary>
-        /// Splits combined faction names like "goatfolk, cragmensch, and pariahs"
-        /// into individual names. Uses greedy resolution to handle faction names
-        /// that contain commas or "and" (e.g. Sultan Cult "Polymed II, the Charmed
-        /// Heir of Mollusks" or hypothetical "Cult of Sand and Bone").
-        /// </summary>
-        static List<string> SplitFactionNames(string raw)
-        {
-            // Normalize Oxford comma: ", and " → ", "
-            string normalized = raw.Replace(", and ", ", ");
-
-            // Split on " and " and greedily merge (handles names containing "and")
-            string[] andParts = normalized.Split(
-                new[] { " and " }, StringSplitOptions.RemoveEmptyEntries);
-            var chunks = GreedyResolve(andParts, " and ");
-
-            // For each chunk, split on ", " and greedily merge (handles names with commas)
-            var names = new List<string>();
-            foreach (string chunk in chunks)
-            {
-                string trimmed = chunk.Trim();
-                if (trimmed.Length == 0) continue;
-
-                if (FactionResolver.Resolve(trimmed) != null || !trimmed.Contains(", "))
-                {
-                    names.Add(trimmed);
-                    continue;
-                }
-
-                string[] commaParts = trimmed.Split(
-                    new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
-                names.AddRange(GreedyResolve(commaParts, ", "));
-            }
-
-            return names;
-        }
-
-        /// <summary>
-        /// Joins adjacent tokens that don't resolve individually.
-        /// e.g. ["Cult of Sand", "Bone", "goatfolk"] with separator " and "
-        ///    → ["Cult of Sand and Bone", "goatfolk"]
-        /// </summary>
-        static List<string> GreedyResolve(string[] tokens, string separator)
-        {
-            var result = new List<string>();
-            int i = 0;
-            while (i < tokens.Length)
-            {
-                string candidate = tokens[i].Trim();
-                int j = i + 1;
-                while (FactionResolver.Resolve(candidate) == null && j < tokens.Length)
-                {
-                    candidate += separator + tokens[j].Trim();
-                    j++;
-                }
-                result.Add(candidate);
-                i = j;
-            }
-            return result;
-        }
-
-        static bool PlayerIsTrueKin()
-        {
-            var player = XRLCore.Core?.Game?.Player?.Body;
-            return player != null && player.IsTrueKin();
-        }
-
         internal static bool OptionEnabled(string id) =>
-            Options.GetOption(id, "Yes")
-                .Equals("Yes", StringComparison.OrdinalIgnoreCase);
+            string.Equals(Options.GetOption(id, "Yes"), "Yes", StringComparison.OrdinalIgnoreCase);
     }
 }
