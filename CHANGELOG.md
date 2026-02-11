@@ -33,6 +33,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Changed the icon, with one that uses CoQ own assets
 
+### Fixed
+
+- Fixed C# 12 collection expression syntax that was incompatible with CoQ's runtime
+
 ## [1.1.0] - 2026-02-08
 
 ### Added
@@ -49,10 +53,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Non-functional reset button from options UI
 - Stale release setup files
-
-### Fixed
-
-- Fixed C# 12 collection expression syntax that was incompatible with CoQ's runtime
 
 ## [1.0.0] - 2026-02-07
 
