@@ -126,7 +126,7 @@ namespace Kawa.ReputationAssistant
             string clean = FactionResolver.StripMarkup(raw);
             var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (string line in clean.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+            foreach (string line in clean.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
             {
                 string trimmed = line.Trim();
                 if (trimmed.Length == 0) continue;
@@ -137,10 +137,24 @@ namespace Kawa.ReputationAssistant
                 string relationship = match.Groups[1].Value;
                 string rawName = match.Groups[2].Value.Trim();
 
-                string internalName = FactionResolver.Resolve(rawName);
-                if (internalName == null || !seen.Add(internalName)) continue;
+                // Try full name first (handles factions with "and" in their name)
+                string singleResolve = FactionResolver.Resolve(rawName);
+                if (singleResolve != null)
+                {
+                    if (seen.Add(singleResolve))
+                        entries.Add(BuildEntry(singleResolve, rawName, relationship, playerRep));
+                }
+                else
+                {
+                    // Game combines factions: "Admired by goatfolk and pariahs"
+                    foreach (string name in SplitFactionNames(rawName))
+                    {
+                        string internalName = FactionResolver.Resolve(name);
+                        if (internalName == null || !seen.Add(internalName)) continue;
 
-                entries.Add(BuildEntry(internalName, rawName, relationship, playerRep));
+                        entries.Add(BuildEntry(internalName, name, relationship, playerRep));
+                    }
+                }
             }
 
             return entries;
@@ -216,6 +230,67 @@ namespace Kawa.ReputationAssistant
         }
 
         // ── Helpers ─────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Splits combined faction names like "goatfolk, cragmensch, and pariahs"
+        /// into individual names. Uses greedy resolution to handle faction names
+        /// that contain commas or "and" (e.g. Sultan Cult "Polymed II, the Charmed
+        /// Heir of Mollusks" or hypothetical "Cult of Sand and Bone").
+        /// </summary>
+        static List<string> SplitFactionNames(string raw)
+        {
+            // Normalize Oxford comma: ", and " → ", "
+            string normalized = raw.Replace(", and ", ", ");
+
+            // Split on " and " and greedily merge (handles names containing "and")
+            string[] andParts = normalized.Split(
+                new[] { " and " }, StringSplitOptions.RemoveEmptyEntries);
+            var chunks = GreedyResolve(andParts, " and ");
+
+            // For each chunk, split on ", " and greedily merge (handles names with commas)
+            var names = new List<string>();
+            foreach (string chunk in chunks)
+            {
+                string trimmed = chunk.Trim();
+                if (trimmed.Length == 0) continue;
+
+                if (FactionResolver.Resolve(trimmed) != null || !trimmed.Contains(", "))
+                {
+                    names.Add(trimmed);
+                    continue;
+                }
+
+                string[] commaParts = trimmed.Split(
+                    new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+                names.AddRange(GreedyResolve(commaParts, ", "));
+            }
+
+            return names;
+        }
+
+        /// <summary>
+        /// Joins adjacent tokens that don't resolve individually.
+        /// e.g. ["Cult of Sand", "Bone", "goatfolk"] with separator " and "
+        ///    → ["Cult of Sand and Bone", "goatfolk"]
+        /// </summary>
+        static List<string> GreedyResolve(string[] tokens, string separator)
+        {
+            var result = new List<string>();
+            int i = 0;
+            while (i < tokens.Length)
+            {
+                string candidate = tokens[i].Trim();
+                int j = i + 1;
+                while (FactionResolver.Resolve(candidate) == null && j < tokens.Length)
+                {
+                    candidate += separator + tokens[j].Trim();
+                    j++;
+                }
+                result.Add(candidate);
+                i = j;
+            }
+            return result;
+        }
 
         static bool PlayerIsTrueKin()
         {

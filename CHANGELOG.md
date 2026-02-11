@@ -5,11 +5,23 @@ All notable changes to the Reputation Assistant mod will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.2] - 2026-02-11
+
+### Fixed
+
+- Fixed multi-faction reputation lines not being parsed (e.g. "Admired by goatfolk and pariahs" now correctly shows both factions)
+
+### Changed
+
+- WR/Kill change values now display an explicit `+` sign for positive deltas
+- Faction name splitting uses greedy resolution to safely handle Sultan Cult names containing commas or "and"
+
 ## [1.2.1] - 2026-02-10
 
 ### Fixed
 
 - Restricted reputation info display to the inspection (Look) screen, preventing it from appearing in message logs and other UI elements
+- Fixed C# 12 collection expression syntax that was incompatible with CoQ's runtime
 
 ## [1.2.0] - 2026-02-09
 
@@ -62,6 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+[1.2.2]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.2.2
 [1.2.1]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.2.1
 [1.2.0]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.2
 [1.1.0]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.1
