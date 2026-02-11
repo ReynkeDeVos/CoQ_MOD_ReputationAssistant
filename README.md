@@ -101,6 +101,8 @@ Works with new and existing saves. Safe to add or remove at any time — the mod
 - Parses the game's `AppendReputationDescription` output to identify faction relationships
 - Resolves display names to internal faction names, handling articles, Unicode apostrophes, Sultan Cults, and procedural villages
 - Hardcoded strategy defaults from qudzoo.com, with per-faction in-game option overrides
+- Includes parser unit tests in `tests/ReputationAssistant.Tests`
+- Includes `tools/sync_options_from_strategy.py` to regenerate per-faction `Options.xml` entries from `FactionStrategy.cs`
 - No external dependencies beyond what Caves of Qud ships with
 
 ## License

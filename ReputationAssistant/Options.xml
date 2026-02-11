@@ -209,7 +209,7 @@
   <option ID="OptionRA_Mamon_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Mamon" />
   <option ID="OptionRA_Mamon_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Mamon" />
 
-  <!-- Mechanimists (default: 3/6, target 300, special) -->
+  <!-- Mechanimists (default: 3/6, target 300, SPECIAL) -->
   <option ID="OptionRA_Mechanimists_Priority" DisplayText="  Priority [default: 3]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="3" Requires="OptionRAFaction==Mechanimists" />
   <option ID="OptionRA_Mechanimists_Target" DisplayText="  Target Rep [default: 300]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="300" Requires="OptionRAFaction==Mechanimists" />
 
