@@ -20,8 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Restricted reputation info display to the inspection (Look) screen, preventing it from appearing in message logs and other UI elements
-
+- Restricted own faction info display to the inspection (Look) screen, preventing it from appearing in message logs and other UI elements
+  
 ## [1.2.0] - 2026-02-09
 
 ### Added
