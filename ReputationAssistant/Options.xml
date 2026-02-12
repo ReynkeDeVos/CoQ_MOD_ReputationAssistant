@@ -43,14 +43,14 @@
   </option>
 
   <option ID="OptionRAShowFaction"
-          DisplayText="Show Creature Factions"
+          DisplayText="Show Creature's Own Faction"
           Category="Mod: Reputation Assistant"
           Type="Checkbox"
           Default="No"
           Requires="OptionRAEnabled==Yes"
           SearchKeywords="reputation assistant faction membership creature show">
     <helptext>
-      Display each creature's primary faction in the look popup description. Default: Off
+      Display the looked-at creature's own faction in the look popup description. Default: Off
     </helptext>
   </option>
 

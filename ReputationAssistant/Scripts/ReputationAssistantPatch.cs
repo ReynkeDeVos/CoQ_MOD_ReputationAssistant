@@ -10,7 +10,9 @@
 
 using HarmonyLib;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using XRL.Core;
 using XRL.UI;
@@ -125,6 +127,25 @@ namespace Kawa.ReputationAssistant
 
         static List<FactionEntry> ParseEntries(GivesRep givesRep, Reputation playerRep)
         {
+            try
+            {
+                if (TryParseEntriesFromRelatedFactions(givesRep, playerRep, out var entries) &&
+                    entries.Count > 0)
+                {
+                    return entries;
+                }
+            }
+            catch
+            {
+                // If runtime related-faction structures differ from expectations,
+                // fall back to parsing the generated description text.
+            }
+
+            return ParseEntriesFromDescription(givesRep, playerRep);
+        }
+
+        static List<FactionEntry> ParseEntriesFromDescription(GivesRep givesRep, Reputation playerRep)
+        {
             var sb = new StringBuilder();
             givesRep.AppendReputationDescription(sb);
             string raw = sb.ToString();
@@ -175,6 +196,227 @@ namespace Kawa.ReputationAssistant
             }
 
             return entries;
+        }
+
+        static bool TryParseEntriesFromRelatedFactions(
+            GivesRep givesRep,
+            Reputation playerRep,
+            out List<FactionEntry> entries)
+        {
+            entries = new List<FactionEntry>();
+            object related = GetMemberValue(givesRep, "relatedFactions", "RelatedFactions");
+            if (related is not IEnumerable collection)
+                return false;
+
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (object item in collection)
+            {
+                if (!TryReadRelatedFaction(item, out string rawFactionName, out string relationship))
+                    continue;
+
+                string internalName = FactionResolver.Resolve(rawFactionName);
+                if (internalName == null || !seen.Add(internalName))
+                    continue;
+
+                entries.Add(BuildEntry(internalName, rawFactionName, relationship, playerRep));
+            }
+
+            return true;
+        }
+
+        static bool TryReadRelatedFaction(object item, out string factionName, out string relationship)
+        {
+            factionName = null;
+            relationship = null;
+            if (item == null)
+                return false;
+
+            object rawFaction = null;
+            object rawRelationship = null;
+
+            if (item is DictionaryEntry dictionaryEntry)
+            {
+                rawFaction = dictionaryEntry.Key;
+                rawRelationship = dictionaryEntry.Value;
+            }
+            else if (TryGetKeyValuePair(item, out object key, out object value))
+            {
+                rawFaction = key;
+                rawRelationship = value;
+            }
+            else
+            {
+                rawFaction = GetMemberValue(item,
+                    "Faction",
+                    "FactionName",
+                    "Name");
+
+                rawRelationship = GetMemberValue(item,
+                    "Feeling",
+                    "Relationship",
+                    "Attitude",
+                    "Opinion");
+            }
+
+            factionName = ExtractFactionName(rawFaction);
+            relationship = NormalizeRelationship(rawRelationship);
+
+            return !string.IsNullOrEmpty(factionName);
+        }
+
+        static bool TryGetKeyValuePair(object item, out object key, out object value)
+        {
+            key = null;
+            value = null;
+            if (item == null)
+                return false;
+
+            var type = item.GetType();
+            if (!type.IsValueType || !type.IsGenericType ||
+                !string.Equals(type.Name, "KeyValuePair`2", StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            var keyProperty = type.GetProperty("Key");
+            var valueProperty = type.GetProperty("Value");
+            if (keyProperty == null || valueProperty == null)
+                return false;
+
+            key = keyProperty.GetValue(item, null);
+            value = valueProperty.GetValue(item, null);
+            return true;
+        }
+
+        static string ExtractFactionName(object value)
+        {
+            if (value == null)
+                return null;
+
+            if (value is string s)
+                return string.IsNullOrWhiteSpace(s) ? null : s.Trim();
+
+            if (value is Faction faction)
+                return string.IsNullOrWhiteSpace(faction.Name) ? null : faction.Name;
+
+            object nestedFaction = GetMemberValue(value, "Faction");
+            if (nestedFaction != null && !ReferenceEquals(nestedFaction, value))
+            {
+                string nestedName = ExtractFactionName(nestedFaction);
+                if (!string.IsNullOrEmpty(nestedName))
+                    return nestedName;
+            }
+
+            object name = GetMemberValue(value, "Name", "DisplayName");
+            if (name is string nameText && !string.IsNullOrWhiteSpace(nameText))
+                return nameText.Trim();
+
+            return null;
+        }
+
+        static string NormalizeRelationship(object value)
+        {
+            if (value == null)
+                return null;
+
+            if (value is string s)
+                return NormalizeRelationshipName(s);
+
+            if (value is IConvertible convertible)
+            {
+                try
+                {
+                    int number = convertible.ToInt32(System.Globalization.CultureInfo.InvariantCulture);
+                    return NormalizeRelationshipFromScore(number);
+                }
+                catch
+                {
+                    // Fall through to string conversion.
+                }
+            }
+
+            return NormalizeRelationshipName(value.ToString());
+        }
+
+        static string NormalizeRelationshipName(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+
+            string normalized = value.Trim();
+            if (normalized.IndexOf("loved", StringComparison.OrdinalIgnoreCase) >= 0)
+                return "Loved";
+            if (normalized.IndexOf("admired", StringComparison.OrdinalIgnoreCase) >= 0)
+                return "Admired";
+            if (normalized.IndexOf("liked", StringComparison.OrdinalIgnoreCase) >= 0)
+                return "Liked";
+            if (normalized.IndexOf("disliked", StringComparison.OrdinalIgnoreCase) >= 0)
+                return "Disliked";
+            if (normalized.IndexOf("hated", StringComparison.OrdinalIgnoreCase) >= 0)
+                return "Hated";
+
+            if (int.TryParse(normalized, out int numericValue))
+                return NormalizeRelationshipFromScore(numericValue);
+
+            return null;
+        }
+
+        static string NormalizeRelationshipFromScore(int score)
+        {
+            if (score >= 100) return "Loved";
+            if (score >= 50) return "Admired";
+            if (score > 0) return "Liked";
+            if (score <= -100) return "Hated";
+            if (score <= -50 || score < 0) return "Disliked";
+            return null;
+        }
+
+        static object GetMemberValue(object source, params string[] memberNames)
+        {
+            if (source == null || memberNames == null)
+                return null;
+
+            const BindingFlags Flags =
+                BindingFlags.Instance |
+                BindingFlags.Public |
+                BindingFlags.NonPublic |
+                BindingFlags.IgnoreCase;
+
+            Type type = source.GetType();
+            foreach (string memberName in memberNames)
+            {
+                if (string.IsNullOrEmpty(memberName))
+                    continue;
+
+                var property = type.GetProperty(memberName, Flags);
+                if (property != null)
+                {
+                    try
+                    {
+                        return property.GetValue(source, null);
+                    }
+                    catch
+                    {
+                        // Continue trying other members.
+                    }
+                }
+
+                var field = type.GetField(memberName, Flags);
+                if (field != null)
+                {
+                    try
+                    {
+                        return field.GetValue(source);
+                    }
+                    catch
+                    {
+                        // Continue trying other members.
+                    }
+                }
+            }
+
+            return null;
         }
 
         static FactionEntry BuildEntry(
