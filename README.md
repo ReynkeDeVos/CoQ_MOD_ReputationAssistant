@@ -91,7 +91,7 @@ This mod tells you what the reputation _means_. To find the legendaries in the f
 
 ### Steam Workshop
 
-Subscribe on the [Steam Workshop page](#) — the mod will be downloaded and enabled automatically.
+Subscribe on the [Steam Workshop page](https://steamcommunity.com/sharedfiles/filedetails/?id=3664930126) — the mod will be downloaded and enabled automatically.
 
 Works with new and existing saves. Safe to add or remove at any time — the mod only appends text to the look popup and stores no persistent data.
 
