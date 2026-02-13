@@ -35,7 +35,7 @@ All settings are in the in-game options menu under [b]Mod: Reputation Assistant[
 • Enable/disable the mod
 • Toggle WR/Kill outcome display
 • Compact layout option (single line per faction)
-• Show character's own faction next to its name (default: off)
+• Show character's own faction(s) next to its name (default: off)
 
 Defaults come from qudzoo.com, but every player disagrees on which factions matter most. Tune them to your playstyle directly from the options menu.
 
@@ -52,5 +52,7 @@ Source code and more detailed description: [url=https://github.com/ReynkeDeVos/C
 [i]Live and drink, friend.[/i]
 
 [h1]Changelog[/h1]
+
+v1.5 - Follow-up patch - Duplicate faction entries now merge correctly, and "Show Creature's Own Faction" now lists all detected factions.
 
 v1.4 - Quick hotfix - Fixed Reputation Assistant not working properly when the advanced option "Show reputation with a creature's factions when looking at them" is enabled (thanks to Reddit user Accio-Books!)

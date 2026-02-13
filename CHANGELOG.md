@@ -5,6 +5,20 @@ All notable changes to the Reputation Assistant mod will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5] - 2026-02-13
+
+Follow-up release focused on faction edge cases.
+
+### Fixed
+
+- Fixed duplicate faction relationships being dropped; repeated entries now merge into one tracker line with combined WR/Kill deltas
+
+### Changed
+
+- "Show Creature's Own Faction" now lists all detected creature factions (not just the primary one)
+- Added exhaustive WR/Kill color regression tests, plus tests for duplicate-entry merging and faction-header parsing
+- Refactored entry/header logic into dedicated helpers and removed unused runtime miss tracking
+
 ## [1.4] - 2026-02-13
 
 Quick hotfix release.
@@ -106,6 +120,7 @@ Clean-up, stabilizing, and testing with other faction mods is still ongoing; a p
 
 ---
 
+[1.5]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.5
 [1.4]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.4
 [1.3]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.3
 [1.2.2]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.2.2

@@ -2,7 +2,7 @@
   "id": "Kawa_ReputationAssistant",
   "title": "{{M|Reputation Assistant}}",
   "description": "When looking at a creature that affects reputation, shows how strategically important each related faction is.\n\nDefaults are sourced from the qudzoo.com reputation guide. Customize via the options menu.",
-  "version": "1.4",
+  "version": "1.5",
   "author": "Kawa",
   "tags": "UX,Script,Faction",
   "previewImage": "icon.png"

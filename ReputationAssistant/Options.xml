@@ -50,7 +50,7 @@
           Requires="OptionRAEnabled==Yes"
           SearchKeywords="reputation assistant faction membership creature show">
     <helptext>
-      Display the looked-at creature's own faction in the look popup description. Default: Off
+      Display the looked-at creature's own faction(s) in the look popup description. Default: Off
     </helptext>
   </option>
 
