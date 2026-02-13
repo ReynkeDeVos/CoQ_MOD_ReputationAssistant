@@ -349,10 +349,10 @@ namespace Kawa.ReputationAssistant
                 return "Loved";
             if (normalized.IndexOf("admired", StringComparison.OrdinalIgnoreCase) >= 0)
                 return "Admired";
-            if (normalized.IndexOf("liked", StringComparison.OrdinalIgnoreCase) >= 0)
-                return "Liked";
             if (normalized.IndexOf("disliked", StringComparison.OrdinalIgnoreCase) >= 0)
                 return "Disliked";
+            if (normalized.IndexOf("liked", StringComparison.OrdinalIgnoreCase) >= 0)
+                return "Liked";
             if (normalized.IndexOf("hated", StringComparison.OrdinalIgnoreCase) >= 0)
                 return "Hated";
 
