@@ -50,3 +50,7 @@ Defaults come from qudzoo.com, but every player disagrees on which factions matt
 Source code and more detailed description: [url=https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant]GitHub[/url]
 
 [i]Live and drink, friend.[/i]
+
+[h1]Changelog[/h1]
+
+v1.4 - Quick hotfix - Fixed Reputation Assistant not working properly when the advanced option "Show reputation with a creature's factions when looking at them" is enabled (thanks to Reddit user Accio-Books!)
