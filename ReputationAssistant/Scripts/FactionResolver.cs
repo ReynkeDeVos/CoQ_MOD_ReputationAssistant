@@ -97,6 +97,14 @@ namespace Kawa.ReputationAssistant
         static readonly Regex MarkupPattern = new(
             @"\{\{[^|]*\|([^}]*)\}\}", RegexOptions.Compiled);
 
+        static readonly Regex InlineRepPattern = new(
+            @"\s*[\(\[\{][^\)\]\}]*[+-]?\d+[^\)\]\}]*[\)\]\}]\s*",
+            RegexOptions.Compiled);
+
+        static readonly Regex TrailingRepPattern = new(
+            @"\s*[:=]\s*[+-]?\d+\s*$",
+            RegexOptions.Compiled);
+
         static readonly object RuntimeMapSync = new();
         static Dictionary<string, string> RuntimeNameToInternal;
         static readonly HashSet<string> RuntimeMisses = new(StringComparer.OrdinalIgnoreCase);
@@ -135,6 +143,10 @@ namespace Kawa.ReputationAssistant
             string name = displayName.Trim()
                 .Replace('\u2019', '\'')
                 .Replace('\u2018', '\'');
+
+            name = StripInlineReputation(name);
+            if (string.IsNullOrEmpty(name))
+                return null;
 
             // Known aliases, direct internal names, and runtime case-insensitive map
             if (TryResolveKnownOrRuntime(name, out string result))
@@ -183,6 +195,25 @@ namespace Kawa.ReputationAssistant
             }
 
             return null;
+        }
+
+        static string StripInlineReputation(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return value;
+
+            string result = value;
+            string previous;
+            do
+            {
+                previous = result;
+                result = InlineRepPattern.Replace(result, " ").Trim();
+            } while (!string.Equals(previous, result, StringComparison.Ordinal));
+
+            result = TrailingRepPattern.Replace(result, string.Empty).Trim();
+
+            result = Regex.Replace(result, @"\s{2,}", " ");
+            return result;
         }
 
         static bool TryResolveKnownOrRuntime(string value, out string internalName)

@@ -5,7 +5,21 @@ All notable changes to the Reputation Assistant mod will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.0] - 2026-02-12
+## [1.4] - 2026-02-13
+
+Quick hotfix release.
+
+### Fixed
+
+- Fixed Reputation Assistant not working properly when the advanced option "Show reputation with a creature's factions when looking at them" is enabled (thanks to Reddit user **Accio-Books**!)
+
+### Changed
+
+- Clarified the option name for showing a creature's own faction in the Look popup
+
+Clean-up, stabilizing, and testing with other faction mods is still ongoing; a patch will follow. If you find a bug, or want a feature, let me know!
+
+## [1.3] - 2026-02-12
 
 ### Added
 
@@ -92,7 +106,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[1.3.0]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.3
+[1.4]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.4
+[1.3]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.3
 [1.2.2]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.2.2
 [1.2.1]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.2.1
 [1.2.0]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.2

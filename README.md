@@ -59,7 +59,7 @@ All settings are in the in-game options menu under **Mod: Reputation Assistant**
 | **Enable**                 | Toggle the entire mod on/off                           |
 | **Show WR/Kill Outcomes**  | Hide the third line if you only want rep + target      |
 | **Compact Layout**         | Single data line per faction instead of two            |
-| **Show Character Faction** | Display the character's own faction next to its name   |
+| **Show Creature's Own Faction** | Display the creature's own faction next to its name   |
 | **Configure Faction**      | Select any faction to override its priority and target |
 
 ### Per-Faction Overrides
@@ -98,7 +98,7 @@ Works with new and existing saves. Safe to add or remove at any time — the mod
 ## Technical Details
 
 - Uses [HarmonyLib](https://harmony.pardeike.net/) to postfix-patch `Description.GetLongDescription`
-- Parses the game's `AppendReputationDescription` output to identify faction relationships
+- Uses `GO.GetPart<GivesRep>().relatedFactions` to identify faction relationships (with a text-parser fallback)
 - Resolves display names to internal faction names, handling articles, Unicode apostrophes, Sultan Cults, and procedural villages
 - Hardcoded strategy defaults from qudzoo.com, with per-faction in-game option overrides
 - Includes parser unit tests in `tests/ReputationAssistant.Tests`
