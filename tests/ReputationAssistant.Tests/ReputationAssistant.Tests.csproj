@@ -14,5 +14,9 @@
 
   <ItemGroup>
     <Compile Include="..\..\ReputationAssistant\Scripts\ReputationTextParser.cs" Link="ReputationTextParser.cs" />
+    <Compile Include="..\..\ReputationAssistant\Scripts\FactionEntry.cs" Link="FactionEntry.cs" />
+    <Compile Include="..\..\ReputationAssistant\Scripts\FactionEntryAggregator.cs" Link="FactionEntryAggregator.cs" />
+    <Compile Include="..\..\ReputationAssistant\Scripts\FactionHeaderUtilities.cs" Link="FactionHeaderUtilities.cs" />
+    <Compile Include="..\..\ReputationAssistant\Scripts\ReputationRenderer.cs" Link="ReputationRenderer.cs" />
   </ItemGroup>
 </Project>

@@ -3,7 +3,7 @@
 //
 // Postfix-patches Description.GetLongDescription to append a reputation
 // tracker showing priority, current/target rep, and WR/Kill projections.
-// Also displays the creature's primary faction in the look popup.
+// Optionally displays the looked-at creature's own faction(s) in the look popup.
 //
 // Reputation mechanics: https://wiki.cavesofqud.com/wiki/Reputation
 // Color codes: https://wiki.cavesofqud.com/wiki/Modding:Colors_%26_Object_Rendering
@@ -25,17 +25,6 @@ namespace Kawa.ReputationAssistant
         new Type[] { typeof(StringBuilder) })]
     static class ReputationAssistantPatch
     {
-        // Reputation deltas per relationship type (wiki source)
-        static readonly Dictionary<string, (int wr, int kill)> RelationshipDeltas =
-            new(StringComparer.OrdinalIgnoreCase)
-        {
-            { "Loved",    (+100, -100) },
-            { "Admired",  ( +50,  -50) },
-            { "Liked",    ( +50,  -50) },
-            { "Disliked", ( -50,  +50) },
-            { "Hated",    (-100, +100) },
-        };
-
         // Sort: highest priority first, then alphabetical
         static readonly Comparison<FactionEntry> EntryComparer = (a, b) =>
         {
@@ -59,18 +48,9 @@ namespace Kawa.ReputationAssistant
                 if (go == null) return;
 
                 // Resolve faction name for any creature
-                string factionHeader = null;
-                if (OptionEnabled("OptionRAShowFaction"))
-                {
-                    string fName = go.GetPrimaryFaction();
-                    if (!string.IsNullOrEmpty(fName))
-                    {
-                        var fObj = Factions.GetIfExists(fName);
-                        if (fObj != null && fObj.Visible)
-                            factionHeader = !string.IsNullOrEmpty(fObj.DisplayName)
-                                ? fObj.DisplayName : fName;
-                    }
-                }
+                string factionHeader = OptionEnabled("OptionRAShowFaction")
+                    ? GetCreatureFactionHeader(go)
+                    : null;
 
                 // Reputation tracker — only for creatures that give rep
                 var givesRep = go.GetPart<GivesRep>();
@@ -125,6 +105,139 @@ namespace Kawa.ReputationAssistant
 
         // ── Parsing ─────────────────────────────────────────────────────
 
+        static string GetCreatureFactionHeader(GameObject go)
+        {
+            if (go == null)
+                return null;
+
+            var factionNames = new List<string>();
+            var seenInternal = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            AddCreatureFaction(factionNames, seenInternal, go.GetPrimaryFaction());
+
+            var brain = go.GetPart<Brain>();
+            if (brain != null)
+            {
+                AddCreatureFactionsFromValue(
+                    factionNames,
+                    seenInternal,
+                    GetMemberValue(brain, "Factions", "FactionMembership", "FactionMemberships"));
+
+                AddCreatureFactionsFromValue(
+                    factionNames,
+                    seenInternal,
+                    GetMemberValue(brain, "PrimaryFaction", "Faction", "FactionName"));
+            }
+
+            return FactionHeaderUtilities.ComposeHeader(factionNames);
+        }
+
+        static void AddCreatureFactionsFromValue(
+            List<string> factionNames,
+            HashSet<string> seenInternal,
+            object value)
+        {
+            if (value == null)
+                return;
+
+            if (value is string text)
+            {
+                AddCreatureFaction(factionNames, seenInternal, text);
+                return;
+            }
+
+            if (value is IDictionary dictionary)
+            {
+                foreach (DictionaryEntry item in dictionary)
+                {
+                    AddCreatureFaction(factionNames, seenInternal, ExtractFactionName(item.Key));
+                    AddCreatureFaction(factionNames, seenInternal, ExtractFactionName(item.Value));
+                }
+
+                return;
+            }
+
+            if (value is IEnumerable collection)
+            {
+                foreach (object item in collection)
+                {
+                    if (item == null)
+                        continue;
+
+                    if (item is DictionaryEntry dictionaryEntry)
+                    {
+                        AddCreatureFaction(factionNames, seenInternal, ExtractFactionName(dictionaryEntry.Key));
+                        AddCreatureFaction(factionNames, seenInternal, ExtractFactionName(dictionaryEntry.Value));
+                        continue;
+                    }
+
+                    if (TryGetKeyValuePair(item, out object key, out object pairValue))
+                    {
+                        AddCreatureFaction(factionNames, seenInternal, ExtractFactionName(key));
+                        AddCreatureFaction(factionNames, seenInternal, ExtractFactionName(pairValue));
+                        continue;
+                    }
+
+                    AddCreatureFaction(factionNames, seenInternal, ExtractFactionName(item));
+                }
+
+                return;
+            }
+
+            if (TryGetKeyValuePair(value, out object singleKey, out object singleValue))
+            {
+                AddCreatureFaction(factionNames, seenInternal, ExtractFactionName(singleKey));
+                AddCreatureFaction(factionNames, seenInternal, ExtractFactionName(singleValue));
+                return;
+            }
+
+            AddCreatureFaction(factionNames, seenInternal, ExtractFactionName(value));
+        }
+
+        static void AddCreatureFaction(
+            List<string> factionNames,
+            HashSet<string> seenInternal,
+            string rawName)
+        {
+            if (TryAddCreatureFaction(factionNames, seenInternal, rawName))
+                return;
+
+            foreach (string candidate in FactionHeaderUtilities.EnumerateSplitCandidates(rawName))
+                TryAddCreatureFaction(factionNames, seenInternal, candidate);
+        }
+
+        static bool TryAddCreatureFaction(
+            List<string> factionNames,
+            HashSet<string> seenInternal,
+            string rawName)
+        {
+            if (string.IsNullOrWhiteSpace(rawName))
+                return false;
+
+            string trimmed = rawName.Trim();
+            if (trimmed.Length == 0)
+                return false;
+
+            string internalName = FactionResolver.Resolve(trimmed);
+            if (internalName == null)
+                return false;
+            if (!seenInternal.Add(internalName))
+                return true;
+
+            var faction = Factions.GetIfExists(internalName);
+            if (faction == null || !faction.Visible)
+                return true;
+
+            string displayName = !string.IsNullOrEmpty(faction.DisplayName)
+                ? faction.DisplayName
+                : faction.Name;
+
+            if (!string.IsNullOrEmpty(displayName))
+                factionNames.Add(displayName);
+
+            return true;
+        }
+
         static List<FactionEntry> ParseEntries(GivesRep givesRep, Reputation playerRep)
         {
             try
@@ -154,7 +267,7 @@ namespace Kawa.ReputationAssistant
             if (string.IsNullOrEmpty(raw)) return entries;
 
             string clean = FactionResolver.StripMarkup(raw);
-            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var entryIndexes = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
             var resolveCache = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
             string ResolveCached(string value)
@@ -179,8 +292,8 @@ namespace Kawa.ReputationAssistant
                 string singleResolve = ResolveCached(rawName);
                 if (singleResolve != null)
                 {
-                    if (seen.Add(singleResolve))
-                        entries.Add(BuildEntry(singleResolve, rawName, relationship, playerRep));
+                    var entry = FactionEntryFactory.Build(singleResolve, rawName, relationship, playerRep);
+                    FactionEntryAggregator.AddOrMerge(entries, entryIndexes, entry);
                 }
                 else
                 {
@@ -188,9 +301,11 @@ namespace Kawa.ReputationAssistant
                     foreach (string name in ReputationTextParser.SplitFactionNames(rawName, ResolveCached))
                     {
                         string internalName = ResolveCached(name);
-                        if (internalName == null || !seen.Add(internalName)) continue;
+                        if (string.IsNullOrEmpty(internalName))
+                            continue;
 
-                        entries.Add(BuildEntry(internalName, name, relationship, playerRep));
+                        var entry = FactionEntryFactory.Build(internalName, name, relationship, playerRep);
+                        FactionEntryAggregator.AddOrMerge(entries, entryIndexes, entry);
                     }
                 }
             }
@@ -208,7 +323,7 @@ namespace Kawa.ReputationAssistant
             if (related is not IEnumerable collection)
                 return false;
 
-            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var entryIndexes = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
             foreach (object item in collection)
             {
@@ -216,10 +331,11 @@ namespace Kawa.ReputationAssistant
                     continue;
 
                 string internalName = FactionResolver.Resolve(rawFactionName);
-                if (internalName == null || !seen.Add(internalName))
+                if (string.IsNullOrEmpty(internalName))
                     continue;
 
-                entries.Add(BuildEntry(internalName, rawFactionName, relationship, playerRep));
+                var entry = FactionEntryFactory.Build(internalName, rawFactionName, relationship, playerRep);
+                FactionEntryAggregator.AddOrMerge(entries, entryIndexes, entry);
             }
 
             return true;
@@ -417,49 +533,6 @@ namespace Kawa.ReputationAssistant
             }
 
             return null;
-        }
-
-        static FactionEntry BuildEntry(
-            string internalName, string rawName, string relationship, Reputation playerRep)
-        {
-            // Defaults from strategy table
-            int target = FactionStrategy.DefaultTarget;
-            int importance = FactionStrategy.DefaultImportance;
-            bool isSpecial = false;
-
-            if (FactionStrategy.Table.TryGetValue(internalName, out var strat))
-            {
-                target = strat.Target;
-                importance = strat.Importance;
-                isSpecial = strat.IsSpecial;
-            }
-
-            // In-game option overrides
-            FactionOptionOverrides.Apply(internalName, ref importance, ref target);
-
-            // Reputation change from relationship
-            int wrChange = 0, killChange = 0;
-            if (RelationshipDeltas.TryGetValue(relationship, out var delta))
-            {
-                wrChange = delta.wr;
-                killChange = delta.kill;
-            }
-
-            // Current player rep
-            var faction = Factions.GetIfExists(internalName);
-            int currentRep = 0;
-            string displayName = rawName;
-            if (faction != null)
-            {
-                currentRep = playerRep.Get(faction);
-                if (!string.IsNullOrEmpty(faction.DisplayName))
-                    displayName = faction.DisplayName;
-            }
-
-            return new FactionEntry(
-                displayName, internalName,
-                currentRep, target, importance, isSpecial,
-                wrChange, killChange);
         }
 
         internal static bool OptionEnabled(string id) =>

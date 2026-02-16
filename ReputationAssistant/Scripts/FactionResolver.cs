@@ -107,7 +107,6 @@ namespace Kawa.ReputationAssistant
 
         static readonly object RuntimeMapSync = new();
         static Dictionary<string, string> RuntimeNameToInternal;
-        static readonly HashSet<string> RuntimeMisses = new(StringComparer.OrdinalIgnoreCase);
         static readonly TimeSpan RuntimeMapRefreshInterval = TimeSpan.FromSeconds(60);
         static DateTime RuntimeMapNextRefreshUtc = DateTime.MinValue;
 
@@ -248,15 +247,11 @@ namespace Kawa.ReputationAssistant
                 if (shouldRefresh)
                 {
                     RuntimeNameToInternal = BuildRuntimeNameMap();
-                    RuntimeMisses.Clear();
                     RuntimeMapNextRefreshUtc = now.Add(RuntimeMapRefreshInterval);
                 }
 
                 if (RuntimeNameToInternal.TryGetValue(value, out internalName))
                     return true;
-
-                if (!RuntimeMisses.Contains(value))
-                    RuntimeMisses.Add(value);
 
                 return false;
             }

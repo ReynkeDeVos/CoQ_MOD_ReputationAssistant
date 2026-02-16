@@ -59,7 +59,7 @@ All settings are in the in-game options menu under **Mod: Reputation Assistant**
 | **Enable**                 | Toggle the entire mod on/off                           |
 | **Show WR/Kill Outcomes**  | Hide the third line if you only want rep + target      |
 | **Compact Layout**         | Single data line per faction instead of two            |
-| **Show Creature's Own Faction** | Display the creature's own faction next to its name   |
+| **Show Creature's Own Faction** | Display the creature's own faction(s) next to its name |
 | **Configure Faction**      | Select any faction to override its priority and target |
 
 ### Per-Faction Overrides
