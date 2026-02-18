@@ -28,7 +28,7 @@ namespace Kawa.ReputationAssistant
         };
 
         // Escalating visibility: brown → grey → teal → gold → orange → magenta → red
-        static readonly string[] TierColors = {"w", "y", "c", "W", "O", "M", "R"};
+        static readonly string[] TierColors = { "w", "y", "c", "W", "O", "M", "R" };
 
         // ── Public API ──────────────────────────────────────────────────
 

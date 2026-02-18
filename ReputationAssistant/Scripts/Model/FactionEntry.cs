@@ -5,7 +5,7 @@ namespace Kawa.ReputationAssistant
 {
     /// <summary>
     /// A single faction entry combining strategy data with current game state.
-    /// Built by <see cref="ReputationAssistantPatch.BuildEntry"/> during parsing.
+    /// Built by <see cref="FactionEntryFactory.Build"/> during parsing.
     /// </summary>
     readonly struct FactionEntry
     {
