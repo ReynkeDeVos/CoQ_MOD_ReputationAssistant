@@ -1,137 +1,15 @@
-// Reputation Assistant - Harmony Patch
-// Author: Kawa | License: MIT
-//
-// Postfix-patches Description.GetLongDescription to append a reputation
-// tracker showing priority, current/target rep, and WR/Kill projections.
-// Optionally displays the looked-at creature's own faction(s) in the look popup.
-//
-// Reputation mechanics: https://wiki.cavesofqud.com/wiki/Reputation
-// Color codes: https://wiki.cavesofqud.com/wiki/Modding:Colors_%26_Object_Rendering
-
-using HarmonyLib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using XRL.Core;
-using XRL.UI;
 using XRL.World;
 using XRL.World.Parts;
 
 namespace Kawa.ReputationAssistant
 {
-    [HarmonyPatch(typeof(Description), nameof(Description.GetLongDescription),
-        new Type[] { typeof(StringBuilder) })]
-    static class ReputationAssistantPatch
+    static partial class ReputationAssistantPatch
     {
-        // Sort: highest priority first, then alphabetical
-        static readonly Comparison<FactionEntry> EntryComparer = (a, b) =>
-        {
-            int cmp = b.Importance.CompareTo(a.Importance);
-            return cmp != 0 ? cmp : string.Compare(
-                a.DisplayName, b.DisplayName, StringComparison.OrdinalIgnoreCase);
-        };
-
-        static DateTime NextErrorLogAtUtc = DateTime.MinValue;
-        static int SuppressedErrorCount;
-
-        // ── Harmony entry point ─────────────────────────────────────────
-
-        public static void Postfix(Description __instance, StringBuilder SB)
-        {
-            try
-            {
-                if (!OptionEnabled("OptionRAEnabled")) return;
-
-                var go = __instance.ParentObject;
-                if (go == null) return;
-
-                // Resolve faction name for any creature
-                string factionHeader = OptionEnabled("OptionRAShowFaction")
-                    ? GetCreatureFactionHeader(go)
-                    : null;
-
-                // Reputation tracker — only for creatures that give rep
-                var givesRep = go.GetPart<GivesRep>();
-                var playerRep = XRLCore.Core?.Game?.PlayerReputation;
-                List<FactionEntry> entries = null;
-
-                if (givesRep != null && playerRep != null)
-                {
-                    entries = ParseEntries(givesRep, playerRep);
-                    if (entries.Count > 0)
-                    {
-                        entries.Sort(EntryComparer);
-                    }
-                    else
-                    {
-                        entries = null;
-                    }
-                }
-
-                // Nothing to show at all
-                if (factionHeader == null && entries == null) return;
-
-                bool wrDone = go.GetIntProperty("WaterRitualed") > 0;
-                ReputationRenderer.RenderSectionHeader(SB, wrDone, factionHeader);
-
-                if (entries != null)
-                {
-                    bool showOutcomes = OptionEnabled("OptionRAShowOutcomes");
-                    bool compact = OptionEnabled("OptionRACompactLayout");
-                    ReputationRenderer.RenderTracker(SB, entries, showOutcomes, compact);
-                }
-            }
-            catch (Exception ex)
-            {
-                var now = DateTime.UtcNow;
-                if (now < NextErrorLogAtUtc)
-                {
-                    SuppressedErrorCount++;
-                    return;
-                }
-
-                string suppressed = SuppressedErrorCount > 0
-                    ? $" (suppressed {SuppressedErrorCount} similar errors)"
-                    : string.Empty;
-                SuppressedErrorCount = 0;
-                NextErrorLogAtUtc = now.AddSeconds(30);
-
-                UnityEngine.Debug.Log(
-                    $"[ReputationAssistant]{suppressed} {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}");
-            }
-        }
-
-        // ── Parsing ─────────────────────────────────────────────────────
-
-        static string GetCreatureFactionHeader(GameObject go)
-        {
-            if (go == null)
-                return null;
-
-            var factionNames = new List<string>();
-            var seenInternal = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-            AddCreatureFaction(factionNames, seenInternal, go.GetPrimaryFaction());
-
-            var brain = go.GetPart<Brain>();
-            if (brain != null)
-            {
-                AddCreatureFactionsFromValue(
-                    factionNames,
-                    seenInternal,
-                    GetMemberValue(brain, "Factions", "FactionMembership", "FactionMemberships"));
-
-                AddCreatureFactionsFromValue(
-                    factionNames,
-                    seenInternal,
-                    GetMemberValue(brain, "PrimaryFaction", "Faction", "FactionName"));
-            }
-
-            return FactionHeaderUtilities.ComposeHeader(factionNames);
-        }
-
         static void AddCreatureFactionsFromValue(
             List<string> factionNames,
             HashSet<string> seenInternal,
@@ -238,25 +116,6 @@ namespace Kawa.ReputationAssistant
             return true;
         }
 
-        static List<FactionEntry> ParseEntries(GivesRep givesRep, Reputation playerRep)
-        {
-            try
-            {
-                if (TryParseEntriesFromRelatedFactions(givesRep, playerRep, out var entries) &&
-                    entries.Count > 0)
-                {
-                    return entries;
-                }
-            }
-            catch
-            {
-                // If runtime related-faction structures differ from expectations,
-                // fall back to parsing the generated description text.
-            }
-
-            return ParseEntriesFromDescription(givesRep, playerRep);
-        }
-
         static List<FactionEntry> ParseEntriesFromDescription(GivesRep givesRep, Reputation playerRep)
         {
             var sb = new StringBuilder();
@@ -264,7 +123,8 @@ namespace Kawa.ReputationAssistant
             string raw = sb.ToString();
 
             var entries = new List<FactionEntry>();
-            if (string.IsNullOrEmpty(raw)) return entries;
+            if (string.IsNullOrEmpty(raw))
+                return entries;
 
             string clean = FactionResolver.StripMarkup(raw);
             var entryIndexes = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
@@ -288,25 +148,22 @@ namespace Kawa.ReputationAssistant
                 string relationship = line.Relationship;
                 string rawName = line.RawFactionNames;
 
-                // Try full name first (handles factions with "and" in their name)
                 string singleResolve = ResolveCached(rawName);
                 if (singleResolve != null)
                 {
                     var entry = FactionEntryFactory.Build(singleResolve, rawName, relationship, playerRep);
                     FactionEntryAggregator.AddOrMerge(entries, entryIndexes, entry);
+                    continue;
                 }
-                else
-                {
-                    // Game combines factions: "Admired by goatfolk and pariahs"
-                    foreach (string name in ReputationTextParser.SplitFactionNames(rawName, ResolveCached))
-                    {
-                        string internalName = ResolveCached(name);
-                        if (string.IsNullOrEmpty(internalName))
-                            continue;
 
-                        var entry = FactionEntryFactory.Build(internalName, name, relationship, playerRep);
-                        FactionEntryAggregator.AddOrMerge(entries, entryIndexes, entry);
-                    }
+                foreach (string name in ReputationTextParser.SplitFactionNames(rawName, ResolveCached))
+                {
+                    string internalName = ResolveCached(name);
+                    if (string.IsNullOrEmpty(internalName))
+                        continue;
+
+                    var entry = FactionEntryFactory.Build(internalName, name, relationship, playerRep);
+                    FactionEntryAggregator.AddOrMerge(entries, entryIndexes, entry);
                 }
             }
 
@@ -348,8 +205,8 @@ namespace Kawa.ReputationAssistant
             if (item == null)
                 return false;
 
-            object rawFaction = null;
-            object rawRelationship = null;
+            object rawFaction;
+            object rawRelationship;
 
             if (item is DictionaryEntry dictionaryEntry)
             {
@@ -363,16 +220,8 @@ namespace Kawa.ReputationAssistant
             }
             else
             {
-                rawFaction = GetMemberValue(item,
-                    "Faction",
-                    "FactionName",
-                    "Name");
-
-                rawRelationship = GetMemberValue(item,
-                    "Feeling",
-                    "Relationship",
-                    "Attitude",
-                    "Opinion");
+                rawFaction = GetMemberValue(item, "Faction", "FactionName", "Name");
+                rawRelationship = GetMemberValue(item, "Feeling", "Relationship", "Attitude", "Opinion");
             }
 
             factionName = ExtractFactionName(rawFaction);
@@ -480,11 +329,16 @@ namespace Kawa.ReputationAssistant
 
         static string NormalizeRelationshipFromScore(int score)
         {
-            if (score >= 100) return "Loved";
-            if (score >= 50) return "Admired";
-            if (score > 0) return "Liked";
-            if (score <= -100) return "Hated";
-            if (score <= -50 || score < 0) return "Disliked";
+            if (score >= 100)
+                return "Loved";
+            if (score >= 50)
+                return "Admired";
+            if (score > 0)
+                return "Liked";
+            if (score <= -100)
+                return "Hated";
+            if (score <= -50 || score < 0)
+                return "Disliked";
             return null;
         }
 
@@ -514,7 +368,6 @@ namespace Kawa.ReputationAssistant
                     }
                     catch
                     {
-                        // Continue trying other members.
                     }
                 }
 
@@ -527,15 +380,11 @@ namespace Kawa.ReputationAssistant
                     }
                     catch
                     {
-                        // Continue trying other members.
                     }
                 }
             }
 
             return null;
         }
-
-        internal static bool OptionEnabled(string id) =>
-            string.Equals(Options.GetOption(id, "Yes"), "Yes", StringComparison.OrdinalIgnoreCase);
     }
 }

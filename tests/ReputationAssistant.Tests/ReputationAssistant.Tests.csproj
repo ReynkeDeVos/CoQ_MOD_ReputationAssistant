@@ -13,10 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\ReputationAssistant\Scripts\ReputationTextParser.cs" Link="ReputationTextParser.cs" />
-    <Compile Include="..\..\ReputationAssistant\Scripts\FactionEntry.cs" Link="FactionEntry.cs" />
-    <Compile Include="..\..\ReputationAssistant\Scripts\FactionEntryAggregator.cs" Link="FactionEntryAggregator.cs" />
-    <Compile Include="..\..\ReputationAssistant\Scripts\FactionHeaderUtilities.cs" Link="FactionHeaderUtilities.cs" />
-    <Compile Include="..\..\ReputationAssistant\Scripts\ReputationRenderer.cs" Link="ReputationRenderer.cs" />
+    <Compile Include="..\..\ReputationAssistant\Scripts\Parsing\ReputationTextParser.cs" Link="ReputationTextParser.cs" />
+    <Compile Include="..\..\ReputationAssistant\Scripts\Model\FactionEntry.cs" Link="FactionEntry.cs" />
+    <Compile Include="..\..\ReputationAssistant\Scripts\Composition\FactionEntryAggregator.cs" Link="FactionEntryAggregator.cs" />
+    <Compile Include="..\..\ReputationAssistant\Scripts\Utilities\FactionHeaderUtilities.cs" Link="FactionHeaderUtilities.cs" />
+    <Compile Include="..\..\ReputationAssistant\Scripts\Rendering\ReputationRenderer.cs" Link="ReputationRenderer.cs" />
+    <Compile Include="..\..\ReputationAssistant\Scripts\Strategy\FactionStrategy.cs" Link="FactionStrategy.cs" />
   </ItemGroup>
 </Project>
