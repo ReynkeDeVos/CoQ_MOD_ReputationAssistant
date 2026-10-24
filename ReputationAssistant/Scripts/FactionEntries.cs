@@ -4,10 +4,14 @@
 // Reads every faction a GivesRep creature affects straight from the game,
 // the same way the game awards reputation:
 //   - Kill: each "Loved by" faction (GetLovedFactions) and each entry of relatedFactions
-//   - Water Ritual: each related faction, plus each of the creature's own factions
+//   - Water Ritual: each related faction, plus the creature's primary and other own factions
 // A faction can show up more than once (say, loved and admired); its changes add up,
-// just like in the game. Works for any faction in the game's registry, so villages,
-// Sultan cults, modded and DLC factions need no special handling.
+// just like in the game. Kill changes use the worst roll of the game's random variance.
+// Water Ritual changes are for a plain ritual: no Tactful, social co-processor or
+// formal-ritual performance bonus.
+// Works for any faction in the game's registry, so villages, Sultan cults, modded and
+// DLC factions need no special handling. Hidden factions are left out, as in the
+// game's own description.
 
 using System;
 using System.Collections.Generic;
@@ -29,6 +33,7 @@ namespace Kawa.ReputationAssistant
         internal static List<FactionEntry> Collect(GameObject creature, GivesRep givesRep, Reputation playerRep, bool wrDone)
         {
             int rep = givesRep.repValue;
+            int Kill(string status) => ReputationMath.WorstRoll(ReputationMath.KillChange(status, rep));
             var changes = new Dictionary<string, (Faction faction, int wr, int kill)>();
 
             void Add(string factionName, int wr, int kill)
@@ -43,17 +48,29 @@ namespace Kawa.ReputationAssistant
 
             // GetLovedFactions refills one shared list, so read it right away.
             foreach (var loved in givesRep.GetLovedFactions(25, VisibleOnly: true, WithoutReason: true))
-                Add(loved.Name, 0, ReputationMath.KillChange("love", rep));
+                Add(loved.Name, 0, Kill("love"));
 
             foreach (var related in givesRep.relatedFactions)
                 Add(related.faction,
                     wrDone ? 0 : ReputationMath.WaterRitualChange(related.status, rep),
-                    ReputationMath.KillChange(related.status, rep));
+                    Kill(related.status));
 
-            // The Water Ritual gives +repValue with each of the creature's own factions.
+            // The Water Ritual gives +repValue with the creature's primary faction, then with each other
+            // faction it belongs to. The game resolves the primary by id or display name, once, into the record.
             if (!wrDone)
+            {
+                string primary = creature.GetPart<WaterRitualRecord>()?.faction;
+                if (primary == null)
+                {
+                    string key = creature.GetPrimaryFaction(Base: true);
+                    primary = (Factions.GetIfExists(key) ?? Factions.GetByDisplayName(key))?.Name;
+                }
+
+                Add(primary, rep, 0);
                 foreach (var membership in creature.Brain.GetBaseAllegiance())
-                    Add(membership.Key, rep, 0);
+                    if (membership.Key != primary)
+                        Add(membership.Key, rep, 0);
+            }
 
             var entries = new List<FactionEntry>(changes.Count);
             foreach (var (faction, wr, kill) in changes.Values)
@@ -68,7 +85,7 @@ namespace Kawa.ReputationAssistant
                     priority,
                     isSpecial: faction.Name == "Mechanimists", // the guide rates them outside the tiers
                     wr,
-                    brokenBond ? kill + ReputationMath.BrokenBondChange : kill));
+                    brokenBond ? kill + ReputationMath.WorstRoll(ReputationMath.BrokenBondChange) : kill));
             }
 
             entries.Sort(ByPriority);

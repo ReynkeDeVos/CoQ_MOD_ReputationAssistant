@@ -108,7 +108,7 @@ namespace Kawa.ReputationAssistant.Tests
             ReputationRenderer.RenderSectionHeader(bonded, null, bonded: true);
             Assert.Contains("=== Reputation Assistant ===", bonded.ToString());
             Assert.Contains("water-bonded", bonded.ToString());
-            Assert.Contains("-100 with every faction", bonded.ToString());
+            Assert.Contains("about -100 with every faction", bonded.ToString());
 
             var notBonded = new StringBuilder();
             ReputationRenderer.RenderSectionHeader(notBonded, "apes, Kyakukya", bonded: false);

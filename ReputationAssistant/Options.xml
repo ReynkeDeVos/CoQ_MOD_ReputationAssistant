@@ -23,7 +23,10 @@
           Requires="OptionRAEnabled==Yes"
           SearchKeywords="reputation assistant water ritual kill outcomes">
     <helptext>
-      Show projected reputation after Water Ritual and Kill actions.
+      Show projected reputation after a Water Ritual and after a kill.
+      Kill numbers assume the game's worst roll; kills vary a little.
+      Water Ritual numbers are for a plain ritual. Tactful, a social
+      co-processor or a well-performed formal ritual add more.
       Disable to show only current rep and target.
       Default: On
     </helptext>

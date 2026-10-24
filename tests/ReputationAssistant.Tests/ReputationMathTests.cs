@@ -33,5 +33,21 @@ namespace Kawa.ReputationAssistant.Tests
         {
             Assert.Equal(expected, ReputationMath.WaterRitualChange(status, repValue));
         }
+
+        // GivesRep.VaryRep: ±10% at 100 or more, ±50% below, rounded to 5 with banker's rounding.
+        [Theory]
+        [InlineData(-200, -220)]
+        [InlineData(200, 180)]
+        [InlineData(-100, -110)]
+        [InlineData(100, 90)]
+        [InlineData(-50, -75)]
+        [InlineData(50, 25)]
+        [InlineData(25, 10)] // 12.5 / 5 = 2.5 rounds to 2
+        [InlineData(-1600, -1760)]
+        [InlineData(0, 0)]
+        public void WorstRoll_MatchesVaryRepExtremes(int award, int expected)
+        {
+            Assert.Equal(expected, ReputationMath.WorstRoll(award));
+        }
     }
 }

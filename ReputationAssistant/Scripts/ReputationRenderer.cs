@@ -43,7 +43,7 @@ namespace Kawa.ReputationAssistant
             sb.Append("\n\n{{K|=== ").Append(title).Append(" ===}}");
 
             if (bonded)
-                sb.Append("  {{G|water-bonded}}\n  {{R|Killing them: ")
+                sb.Append("  {{G|water-bonded}}\n  {{R|Killing them breaks the bond: about ")
                   .Append(ReputationMath.BrokenBondChange)
                   .Append(" with every faction}}");
         }
