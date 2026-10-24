@@ -11,7 +11,7 @@ Look at anyone whose death or Water Ritual changes your reputation, and the popu
 
 [list]
 [*]The tag is the faction's priority, from 0 to 6. Try to stay at or above the target.
-[*]Green is safe. Red leaves you below the target.
+[*]Green reaches the target or moves toward it. Red leaves you below it.
 [*]Kills show the worst roll. Water Ritual numbers are for a plain ritual.
 [/list]
 
