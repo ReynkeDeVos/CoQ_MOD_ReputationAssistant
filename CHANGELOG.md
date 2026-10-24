@@ -12,10 +12,10 @@ Checked against Caves of Qud 2.0.211.56.
 ### Fixed
 
 - Kill and Water Ritual numbers now follow the game's code. A kill costs about twice the creature's reputation value with every faction that loves or admires it (-200 for most legendaries, not -50 or -100), and gains that much with factions that hate it. Creatures with their own value, like Oboroqoru (800), now show their real numbers.
-- Kills vary randomly in the game, so the kill numbers and colors now assume the worst roll: a green kill stays above your target however it rolls.
+- Kills vary randomly in the game, so the kill numbers and colors now assume the worst roll. A green kill reaches your target, or at least improves your standing, however it rolls.
 - The game-API path from 1.4 never actually worked. It looked for the wrong field, failed on every creature, and the mod quietly fell back to parsing the description text. The mod now reads the game data directly.
 - Factions the game hides from the description (no reason given) are now listed too, because killing the creature still changes them.
-- The Water Ritual projection disappears once you've done the ritual. Before that, it shows a plain ritual; Tactful, a social co-processor or a good formal ritual add more.
+- The Water Ritual projection disappears once you've done the ritual. Before that, it shows a plain ritual: Tactful or a social co-processor add a bit, and a formal ritual can raise or lower the result.
 - Killing a water-bonded creature now includes the curse (about -100), and the header warns that it applies to every faction.
 
 ### Added

@@ -25,8 +25,8 @@
     <helptext>
       Show projected reputation after a Water Ritual and after a kill.
       Kill numbers assume the game's worst roll; kills vary a little.
-      Water Ritual numbers are for a plain ritual. Tactful, a social
-      co-processor or a well-performed formal ritual add more.
+      Water Ritual numbers are for a plain ritual. Tactful or a social
+      co-processor add a bit; a formal ritual can raise or lower them.
       Disable to show only current rep and target.
       Default: On
     </helptext>

@@ -7,8 +7,8 @@
 //   - Water Ritual: each related faction, plus the creature's primary and other own factions
 // A faction can show up more than once (say, loved and admired); its changes add up,
 // just like in the game. Kill changes use the worst roll of the game's random variance.
-// Water Ritual changes are for a plain ritual: no Tactful, social co-processor or
-// formal-ritual performance bonus.
+// Water Ritual changes are for a plain ritual: no Tactful or social co-processor bonus,
+// and no formal-ritual performance, which can raise or lower every award.
 // Works for any faction in the game's registry, so villages, Sultan cults, modded and
 // DLC factions need no special handling. Hidden factions are left out, as in the
 // game's own description.

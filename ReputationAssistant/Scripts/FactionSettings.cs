@@ -34,8 +34,10 @@ namespace Kawa.ReputationAssistant
             if (factionName == "Templar")
                 return The.Player?.IsTrueKin() == true ? "Templar_TrueKin" : "Templar_Mutant";
 
-            // Keys spell spaces as '_', so an id that already has '_' would borrow another faction's sliders.
-            return factionName.IndexOf('_') >= 0 ? "Other" : factionName.Replace(' ', '_');
+            // Keys spell spaces as '_'. An id that already has '_', or one that would spell a
+            // Templar genotype key ("Templar Mutant"), would borrow another faction's sliders.
+            string key = factionName.Replace(' ', '_');
+            return factionName.IndexOf('_') >= 0 || key.StartsWith("Templar_") ? "Other" : key;
         }
 
         static int? Read(string key, string setting) =>
