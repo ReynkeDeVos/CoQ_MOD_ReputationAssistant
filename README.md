@@ -6,9 +6,9 @@ I made it because I kept opening the faction list before every Water Ritual.
 
 Get it on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3664930126).
 
-<img src="promo/assets/screenshot_v1.2.png" alt="The tracker under a creature's description" height="340" /> <img src="promo/assets/screenshot_v1.2_compact.png" alt="Compact layout" height="340" /> <img src="promo/assets/screenshot_menu_v1.2.png" alt="Options menu" height="340" />
+<img src="promo/assets/screenshot_v1.6.png" alt="The tracker under Warden Yrame's description" height="340" /> <img src="promo/assets/screenshot_v1.2_compact.png" alt="Compact layout" height="340" /> <img src="promo/assets/screenshot_menu_v1.2.png" alt="Options menu" height="340" />
 
-<sub>Screenshots are from 1.2. The Water Ritual and kill numbers changed in 1.6.</sub>
+<sub>The compact and menu screenshots are from 1.2, so the compact one still shows the old numbers.</sub>
 
 **Spoilers:** the priorities come from A-F-F-I-N-E's [reputation guide](https://www.qudzoo.com/advice/reputation) on qudzoo.com. They're opinionated and give away which factions matter later, so maybe leave this off for your first few runs.
 
