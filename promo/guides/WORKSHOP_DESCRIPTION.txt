@@ -17,11 +17,11 @@ The priorities come from A-F-F-I-N-E's [url=https://www.qudzoo.com/advice/reputa
 
 The tag is the guide's priority, from 0 (irrelevant) to 6 (critical). The target is the reputation you want to stay at or above. Your rep is green at or above the target. An outcome is green if it reaches the target or at least moves toward it, and red otherwise.
 
-The game rolls each kill's reputation change, so kill numbers show the worst roll. Water Ritual numbers are for a plain ritual: Tactful, a social co-processor or a good formal ritual add a bit more. The WR part goes away once you've done the ritual. If you're water-bonded, you get a reminder that killing them costs about 100 reputation with every faction.
+The game rolls each kill's reputation change, so kill numbers show the worst roll. Water Ritual numbers are for a plain ritual: Tactful or a social co-processor add a bit, and a formal ritual can raise or lower every change. The WR part goes away once you've done the ritual. If you're water-bonded, you get a reminder that killing them costs about 100 reputation with every faction.
 
 [h1]Options[/h1]
 
-Everything is under [b]Mod: Reputation Assistant[/b] in the options menu. You can hide the WR and kill line, squeeze each faction onto one line, or show the creature's own factions as the title.
+Everything is under [b]Mod: Reputation Assistant[/b] in the options menu. You can hide the WR and kill line, put each faction's numbers on one line, or show the creature's own factions as the title.
 
 [b]Configure Faction[/b] changes the priority and target of each listed faction. Foxen and Snailfolk from the Diaspora DLC have their own entries. [b]Other factions[/b] is one setting for every faction without its own entry, like villages and factions added by other mods.
 
