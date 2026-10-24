@@ -28,7 +28,7 @@ namespace Kawa.ReputationAssistant.Tests
             600,
         };
 
-        static readonly int[] OutcomeDeltas = { -100, -50, 0, 50, 100 };
+        static readonly int[] OutcomeDeltas = { -300, -200, -100, -50, 0, 50, 100, 200 };
 
         [Fact]
         public void FactionEntry_SafetyFlags_MatchRuleAcrossBoundaryCases()
@@ -87,11 +87,39 @@ namespace Kawa.ReputationAssistant.Tests
             }
         }
 
+        [Theory]
+        [InlineData(false)]
+        [InlineData(true)]
+        public void RenderTracker_AfterWaterRitual_ShowsOnlyKill(bool compact)
+        {
+            var sb = new StringBuilder();
+            ReputationRenderer.RenderTracker(sb, new List<FactionEntry> { CreateEntry(0, -249, 0, -200) },
+                showOutcomes: true, showWR: false, compact: compact);
+
+            string rendered = sb.ToString();
+            Assert.DoesNotContain("WR", rendered);
+            Assert.Contains("Kill", rendered);
+        }
+
+        [Fact]
+        public void RenderSectionHeader_WhenBonded_WarnsAboutTheCurse()
+        {
+            var bonded = new StringBuilder();
+            ReputationRenderer.RenderSectionHeader(bonded, null, bonded: true);
+            Assert.Contains("=== Reputation Assistant ===", bonded.ToString());
+            Assert.Contains("water-bonded", bonded.ToString());
+            Assert.Contains("about -100 with every faction", bonded.ToString());
+
+            var notBonded = new StringBuilder();
+            ReputationRenderer.RenderSectionHeader(notBonded, "apes, Kyakukya", bonded: false);
+            Assert.Contains("=== apes, Kyakukya ===", notBonded.ToString());
+            Assert.DoesNotContain("water-bonded", notBonded.ToString());
+        }
+
         static FactionEntry CreateEntry(int current, int target, int wrChange, int killChange)
         {
             return new FactionEntry(
                 displayName: "Test Faction",
-                internalName: "TestFaction",
                 currentRep: current,
                 targetRep: target,
                 importance: 2,
@@ -107,6 +135,7 @@ namespace Kawa.ReputationAssistant.Tests
                 sb,
                 new List<FactionEntry> { entry },
                 showOutcomes: true,
+                showWR: true,
                 compact: compact);
 
             return sb.ToString();

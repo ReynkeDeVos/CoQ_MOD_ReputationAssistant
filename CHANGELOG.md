@@ -5,6 +5,29 @@ All notable changes to the Reputation Assistant mod will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6] - 2026-10-24
+
+Checked against Caves of Qud 2.0.211.56.
+
+### Fixed
+
+- Kill and Water Ritual numbers now follow the game's code. A kill costs about twice the creature's reputation value with every faction that loves or admires it (-200 for most legendaries, not -50 or -100), and gains that much with factions that hate it. Creatures with their own value, like Oboroqoru (800), now show their real numbers.
+- Kills vary randomly in the game, so the kill numbers and colors now assume the worst roll. A green kill reaches your target, or at least improves your standing, however it rolls.
+- The game-API path from 1.4 never actually worked. It looked for the wrong field, failed on every creature, and the mod quietly fell back to parsing the description text. The mod now reads the game data directly.
+- Factions the game hides from the description (no reason given) are now listed too, because killing the creature still changes them.
+- The Water Ritual projection disappears once you've done the ritual. Before that, it shows a plain ritual: Tactful or a social co-processor add a bit, and a formal ritual can raise or lower the result.
+- Killing a water-bonded creature now includes the curse (about -100), and the header warns that it applies to every faction.
+
+### Added
+
+- Works with any faction the game shows you: villages, Sultan cults, and factions from mods or DLC. No name list to keep up to date. Hidden factions stay hidden, like in the game's own description.
+- "Other factions" under Configure Faction sets the priority and target for every faction that has no entry of its own.
+- Foxen and Snailfolk, the two factions coming with the Diaspora DLC, have their own entries.
+
+### Removed
+
+- The description text parser, the faction name table and all reflection, about 1,000 lines. Faction defaults now live only in `Options.xml`.
+
 ## [1.5] - 2026-02-13
 
 Follow-up release focused on faction edge cases.

@@ -34,24 +34,26 @@ namespace Kawa.ReputationAssistant
 
         /// <summary>
         /// Appends the section header. Call once before RenderTracker.
-        /// If wrDone is true, appends a water-bonded indicator.
+        /// A water-bonded creature also gets a warning: killing it curses you.
         /// </summary>
-        internal static void RenderSectionHeader(StringBuilder sb, bool wrDone, string factionHeader = null)
+        internal static void RenderSectionHeader(StringBuilder sb, string title, bool bonded)
         {
-            string title = string.IsNullOrEmpty(factionHeader)
-                ? "Reputation Assistant"
-                : factionHeader;
-            sb.Append("\n\n{{K|=== " + title + " ===}}");
+            if (string.IsNullOrEmpty(title))
+                title = "Reputation Assistant";
+            sb.Append("\n\n{{K|=== ").Append(title).Append(" ===}}");
 
-            if (wrDone)
-                sb.Append("  {{G|water-bonded}}");
+            if (bonded)
+                sb.Append("  {{G|water-bonded}}\n  {{R|Killing them breaks the bond: about ")
+                  .Append(ReputationMath.BrokenBondChange)
+                  .Append(" with every faction}}");
         }
 
         /// <summary>
         /// Appends the full reputation tracker entries.
         /// </summary>
+        /// <param name="showWR">False once the Water Ritual is done; there's nothing left to project.</param>
         internal static void RenderTracker(StringBuilder sb, List<FactionEntry> entries,
-            bool showOutcomes, bool compact)
+            bool showOutcomes, bool showWR, bool compact)
         {
             bool first = true;
 
@@ -65,9 +67,9 @@ namespace Kawa.ReputationAssistant
                 RenderEntryHeader(sb, e, tier);
 
                 if (compact)
-                    RenderCompact(sb, e, showOutcomes);
+                    RenderCompact(sb, e, showOutcomes, showWR);
                 else
-                    RenderDefault(sb, e, showOutcomes);
+                    RenderDefault(sb, e, showOutcomes, showWR);
             }
         }
 
@@ -88,9 +90,9 @@ namespace Kawa.ReputationAssistant
 
         /// <summary>
         /// Compact layout — single data line per faction.
-        ///   -150 / 0   WR→  -50  Kill→ -250
+        ///   -150 / 0   WR→  -50  Kill→ -350
         /// </summary>
-        static void RenderCompact(StringBuilder sb, FactionEntry e, bool showOutcomes)
+        static void RenderCompact(StringBuilder sb, FactionEntry e, bool showOutcomes, bool showWR)
         {
             string repColor = e.IsOnTarget ? "G" : "R";
 
@@ -101,8 +103,9 @@ namespace Kawa.ReputationAssistant
 
             if (!showOutcomes) return;
 
-            sb.Append("   WR{{K|\u2192}}{{").Append(e.IsWRSafe ? "G" : "R")
-              .Append("|").Append(Pad(e.WRResult)).Append("}}");
+            if (showWR)
+                sb.Append("   WR{{K|\u2192}}{{").Append(e.IsWRSafe ? "G" : "R")
+                  .Append("|").Append(Pad(e.WRResult)).Append("}}");
             sb.Append("  Kill{{K|\u2192}}{{").Append(e.IsKillSafe ? "G" : "R")
               .Append("|").Append(Pad(e.KillResult)).Append("}}");
         }
@@ -110,9 +113,9 @@ namespace Kawa.ReputationAssistant
         /// <summary>
         /// Default layout — separate lines for rep and outcomes.
         ///   Rep  -150  target    0
-        ///   WR +100 =  -50  │  Kill -100 = -250
+        ///   WR +100 =  -50  │  Kill -200 = -350
         /// </summary>
-        static void RenderDefault(StringBuilder sb, FactionEntry e, bool showOutcomes)
+        static void RenderDefault(StringBuilder sb, FactionEntry e, bool showOutcomes, bool showWR)
         {
             string repColor = e.IsOnTarget ? "G" : "R";
 
@@ -123,11 +126,12 @@ namespace Kawa.ReputationAssistant
 
             if (!showOutcomes) return;
 
-            sb.Append('\n');
-            sb.Append("    WR ").Append(SignedPad(e.WRChange))
-              .Append(" = {{").Append(e.IsWRSafe ? "G" : "R").Append("|")
-              .Append(Pad(e.WRResult)).Append("}}");
-            sb.Append("  {{K|\u2502}}  Kill ").Append(SignedPad(e.KillChange))
+            sb.Append("\n    ");
+            if (showWR)
+                sb.Append("WR ").Append(SignedPad(e.WRChange))
+                  .Append(" = {{").Append(e.IsWRSafe ? "G" : "R").Append("|")
+                  .Append(Pad(e.WRResult)).Append("}}  {{K|\u2502}}  ");
+            sb.Append("Kill ").Append(SignedPad(e.KillChange))
               .Append(" = {{").Append(e.IsKillSafe ? "G" : "R").Append("|")
               .Append(Pad(e.KillResult)).Append("}}");
         }

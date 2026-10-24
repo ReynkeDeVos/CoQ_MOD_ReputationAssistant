@@ -1,16 +1,12 @@
-// Reputation Assistant - Faction Entry Data Model
+// Reputation Assistant - Faction Entry
 // Author: Kawa | License: MIT
 
 namespace Kawa.ReputationAssistant
 {
-    /// <summary>
-    /// A single faction entry combining strategy data with current game state.
-    /// Built by <see cref="ReputationAssistantPatch.BuildEntry"/> during parsing.
-    /// </summary>
+    /// <summary>One faction's line in the tracker: settings plus current and projected reputation.</summary>
     readonly struct FactionEntry
     {
         public readonly string DisplayName;
-        public readonly string InternalName;
         public readonly int CurrentRep;
         public readonly int TargetRep;
         public readonly int Importance;
@@ -19,12 +15,11 @@ namespace Kawa.ReputationAssistant
         public readonly int KillChange;
 
         public FactionEntry(
-            string displayName, string internalName,
+            string displayName,
             int currentRep, int targetRep, int importance, bool isSpecial,
             int wrChange, int killChange)
         {
             DisplayName = displayName;
-            InternalName = internalName;
             CurrentRep = currentRep;
             TargetRep = targetRep;
             Importance = importance;
@@ -32,8 +27,6 @@ namespace Kawa.ReputationAssistant
             WRChange = wrChange;
             KillChange = killChange;
         }
-
-        // -- Computed properties ------------------------------------------
 
         public int WRResult => CurrentRep + WRChange;
         public int KillResult => CurrentRep + KillChange;
