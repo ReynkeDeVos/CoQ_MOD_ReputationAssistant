@@ -59,15 +59,21 @@
           DisplayText="Configure Faction"
           Category="Mod: Reputation Assistant"
           Type="Combo"
-          Values="(None),Antelopes,Apes,Arachnids,Baboons,Baetyls,Barathrumites,Bears,Birds,Cannibals,Cats,Chavvah,Consortium,Crabs,Cragmensch,Daughters,Dogs,Dromad,Entropic,Equines,Ezra,Farmers,Fish,Flowers,Frogs,Fungi,Girsh,Goatfolk,Gyre Wights,Hermits,Hindren,Insects,Issachari,Joppa,Kyakukya,Mamon,Mechanimists,Merchants,Mollusks,Mopango,Naphtaali,Newly Sentient Beings,Oozes,Pariahs,Prey,Resheph,Robots,Roots,Seekers,Snapjaws,Strangers,Succulents,SultanCult1,SultanCult2,SultanCult3,SultanCult4,SultanCult5,Svardym,Swine,Templar (Mutant),Templar (True Kin),Tortoises,Trees,Trolls,Unshelled Reptiles,Urchins,Vines,Wardens,Water,Winged Mammals,Worms,YdFreehold"
+          Values="(None),Other factions,Antelopes,Apes,Arachnids,Baboons,Baetyls,Barathrumites,Bears,Birds,Cannibals,Cats,Chavvah,Consortium,Crabs,Cragmensch,Daughters,Dogs,Dromad,Entropic,Equines,Ezra,Farmers,Fish,Flowers,Foxen,Frogs,Fungi,Girsh,Goatfolk,Gyre Wights,Hermits,Hindren,Insects,Issachari,Joppa,Kyakukya,Mamon,Mechanimists,Merchants,Mollusks,Mopango,Naphtaali,Newly Sentient Beings,Oozes,Pariahs,Prey,Resheph,Robots,Roots,Seekers,Snailfolk,Snapjaws,Strangers,Succulents,SultanCult1,SultanCult2,SultanCult3,SultanCult4,SultanCult5,Svardym,Swine,Templar (Mutant),Templar (True Kin),Tortoises,Trees,Trolls,Unshelled Reptiles,Urchins,Vines,Wardens,Water,Winged Mammals,Worms,YdFreehold"
           Default="(None)"
           Requires="OptionRAEnabled==Yes"
           SearchKeywords="reputation assistant faction configure override">
     <helptext>
       Select a faction to customize its strategic priority and target reputation.
+      "Other factions" covers every faction without its own entry:
+      random villages and factions added by mods or DLC.
       Changes take effect immediately.
     </helptext>
   </option>
+
+  <!-- Other factions: villages, modded and DLC factions (default: 1/6, target -249, the guide's advice for random villages) -->
+  <option ID="OptionRA_Other_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Other factions" />
+  <option ID="OptionRA_Other_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Other factions" />
 
   <!-- Antelopes (default: 0/6, target -249) -->
   <option ID="OptionRA_Antelopes_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Antelopes" />
@@ -160,6 +166,10 @@
   <!-- Flowers (default: 5/6, target 250) -->
   <option ID="OptionRA_Flowers_Priority" DisplayText="  Priority [default: 5]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="5" Requires="OptionRAFaction==Flowers" />
   <option ID="OptionRA_Flowers_Target" DisplayText="  Target Rep [default: 250]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="250" Requires="OptionRAFaction==Flowers" />
+
+  <!-- Foxen (default: 1/6, target -249) - Diaspora DLC; hidden in the base game -->
+  <option ID="OptionRA_Foxen_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Foxen" />
+  <option ID="OptionRA_Foxen_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Foxen" />
 
   <!-- Frogs (default: 1/6, target -249) -->
   <option ID="OptionRA_Frogs_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Frogs" />
@@ -260,6 +270,10 @@
   <!-- Seekers (default: 6/6, target -249) -->
   <option ID="OptionRA_Seekers_Priority" DisplayText="  Priority [default: 6]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="6" Requires="OptionRAFaction==Seekers" />
   <option ID="OptionRA_Seekers_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Seekers" />
+
+  <!-- Snailfolk (default: 1/6, target -249) - Diaspora DLC; hidden in the base game -->
+  <option ID="OptionRA_Snailfolk_Priority" DisplayText="  Priority [default: 1]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="1" Requires="OptionRAFaction==Snailfolk" />
+  <option ID="OptionRA_Snailfolk_Target" DisplayText="  Target Rep [default: -249]" Category="Mod: Reputation Assistant" Type="Slider" Min="-600" Max="600" Increment="1" Default="-249" Requires="OptionRAFaction==Snailfolk" />
 
   <!-- Snapjaws (default: 0/6, target -249) -->
   <option ID="OptionRA_Snapjaws_Priority" DisplayText="  Priority [default: 0]" Category="Mod: Reputation Assistant" Type="Slider" Min="0" Max="6" Increment="1" Default="0" Requires="OptionRAFaction==Snapjaws" />
