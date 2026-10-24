@@ -1,4 +1,4 @@
-Look at a legendary, or anyone else whose death or Water Ritual changes your reputation, and Reputation Assistant lists every faction involved: how much that faction matters, where you stand with it, and what a Water Ritual or a kill would do.
+Look at a legendary, or anyone whose death or Water Ritual changes your reputation, and the popup lists each faction involved: how much it matters, where you stand, and what a Water Ritual or a kill would do.
 
 I made it because I kept opening the faction list before every Water Ritual.
 
@@ -12,18 +12,18 @@ The priorities come from A-F-F-I-N-E's [url=https://www.qudzoo.com/advice/reputa
 === Reputation Assistant ===
   [5/6 High Priority] Naphtaali tribe
     Rep -350  target -249
-    WR +100 = -250  │  Kill -200 = -550
+    WR +100 = -250  │  Kill -220 = -570
 [/code]
 
-The tag is the guide's priority, from 0 (irrelevant) to 6 (critical). The target is the reputation you want to stay at or above. Green means you're on target or getting closer. Red means you're below it, or about to drop further.
+The tag is the guide's priority, from 0 (irrelevant) to 6 (critical). The target is the reputation you want to stay at or above. Your rep is green at or above the target. An outcome is green if it reaches the target or at least moves toward it, and red otherwise.
 
-The game varies each kill by about 10%, so read the kill number as roughly right. The WR part goes away once you've done the ritual. If you're water-bonded, you get a reminder that killing them costs 100 reputation with every faction.
+The game rolls each kill's reputation change, so kill numbers show the worst roll. Water Ritual numbers are for a plain ritual: Tactful, a social co-processor or a good formal ritual add a bit more. The WR part goes away once you've done the ritual. If you're water-bonded, you get a reminder that killing them costs about 100 reputation with every faction.
 
 [h1]Options[/h1]
 
 Everything is under [b]Mod: Reputation Assistant[/b] in the options menu. You can hide the WR and kill line, squeeze each faction onto one line, or show the creature's own factions as the title.
 
-[b]Configure Faction[/b] changes the priority and target of any faction. Foxen and Snailfolk from the Diaspora DLC have their own entries. [b]Other factions[/b] covers villages and factions added by other mods.
+[b]Configure Faction[/b] changes the priority and target of each listed faction. Foxen and Snailfolk from the Diaspora DLC have their own entries. [b]Other factions[/b] is one setting for every faction without its own entry, like villages and factions added by other mods.
 
 It works with existing saves, and you can remove it any time: it only adds text to the look popup.
 
@@ -35,7 +35,7 @@ Source on [url=https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant]GitHub
 
 [h1]Changelog[/h1]
 
-v1.6: Kill and Water Ritual numbers now match the game's code; kills used to show 2 to 4 times too little. Works with any faction, including villages, other mods and DLC. New "Other factions" setting.
+v1.6: Kill and Water Ritual numbers now use the game's own formulas; for most legendaries a kill used to show far too little. Kills show the worst roll. Works with any faction you can see, including villages, other mods and DLC. New "Other factions" setting.
 
 v1.5: Duplicate factions merge into one line. "Show Creature's Own Faction" lists all of the creature's factions.
 
