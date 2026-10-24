@@ -1,58 +1,42 @@
-I got tired of tracking my reputation across dozens of factions by digging through the reputation list before deciding whether to Water Ritual, fight, or flee.
+Look at a legendary, or anyone whose death or Water Ritual changes your reputation, and the popup lists each faction involved: how much it matters, where you stand, and what a Water Ritual or a kill would do.
 
-Reputation Assistant adds a readout directly to the creature inspection popup for any creature that participates in the reputation system (legendaries, named characters, anyone with the "GivesRep" part).
+I made it because I kept opening the faction list before every Water Ritual.
 
-[h1]SPOILER WARNING[/h1]
+[h1]Spoilers[/h1]
 
-[b]Do not use this for the first few playthroughs![/b] The priority/target guidance is based on a heavily opinionated list and contains spoilers.
+The priorities come from A-F-F-I-N-E's [url=https://www.qudzoo.com/advice/reputation]reputation guide[/url] on qudzoo.com. They're opinionated and give away which factions matter later, so maybe leave this off for your first few runs.
 
-[h1]What It Shows[/h1]
-
-For each faction associated with the creature:
+[h1]Reading it[/h1]
 
 [code]
-  [5/6 High Priority] Insects
-    Rep: -100  Target: -249
-    WR +50 = -50   Kill -50 = -150
+=== Reputation Assistant ===
+  [5/6 High Priority] Naphtaali tribe
+    Rep -350  target -249
+    WR +100 = -250  │  Kill -220 = -570
 [/code]
 
-Priority tiers and target values come from A-F-F-I-N-E's [url=https://www.qudzoo.com/advice/reputation]qudzoo.com reputation guide[/url].
+The tag is the guide's priority, from 0 (irrelevant) to 6 (critical). The target is the reputation you want to stay at or above. Your rep is green at or above the target. An outcome is green if it reaches the target or at least moves toward it, and red otherwise.
 
-[b]Line 1[/b] — Priority tier (0–6, color-coded by urgency) and faction name.
+The game rolls each kill's reputation change, so kill numbers show the worst roll. Water Ritual numbers are for a plain ritual: Tactful or a social co-processor add a bit, and a formal ritual can raise or lower every change. The WR part goes away once you've done the ritual. If you're water-bonded, you get a reminder that killing them costs about 100 reputation with every faction.
 
-[b]Line 2[/b] — Your current reputation (green if at/above target, red if below) and the strategic target — the minimum reputation threshold you want to stay above.
+[h1]Options[/h1]
 
-[b]Line 3[/b] — What happens if you do the Water Ritual or Kill. The resulting reputation is green if it stays at or above the target, and red if it drops below the target or moves further away from it.
+Everything is under [b]Mod: Reputation Assistant[/b] in the options menu. You can hide the WR and kill line, put each faction's numbers on one line, or show the creature's own factions as the title.
 
-[h1]Highly Recommended Companion Mod[/h1]
+[b]Configure Faction[/b] changes the priority and target of each listed faction. Foxen and Snailfolk from the Diaspora DLC have their own entries. [b]Other factions[/b] is one setting for every faction without its own entry, like villages and factions added by other mods.
 
-This mod helps you decide what to do once you find someone important. To help you [i]to be aware[/i] of legendaries in the first place, install [b][url=https://steamcommunity.com/sharedfiles/filedetails/?id=3507307896]You Spot a Legendary![/url][/b] by Cattlesquat (announces legendaries and auto-journals them).
+It works with existing saves, and you can remove it any time: it only adds text to the look popup.
 
-[h1]Customizable[/h1]
+It pairs well with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3507307896]You Spot a Legendary![/url] by Cattlesquat, which tells you when a legendary shows up.
 
-All settings are in the in-game options menu under [b]Mod: Reputation Assistant[/b]:
-
-• Enable/disable the mod
-• Toggle WR/Kill outcome display
-• Compact layout option (single line per faction)
-• Show character's own faction(s) next to its name (default: off)
-
-Defaults come from qudzoo.com, but every player disagrees on which factions matter most. Tune them to your playstyle directly from the options menu.
-
-• In the options menu, select any faction to override its priority and target reputation.
-
-[h1]Details[/h1]
-
-• Works with new and existing saves
-• Safe to add or remove at any time — stores no persistent data
-• Only appends text to the look popup (doesn't change gameplay)
-
-Source code and more detailed description: [url=https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant]GitHub[/url]
+Source on [url=https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant]GitHub[/url].
 
 [i]Live and drink, friend.[/i]
 
 [h1]Changelog[/h1]
 
-v1.5 - Follow-up patch - Duplicate faction entries now merge correctly, and "Show Creature's Own Faction" now lists all detected factions.
+v1.6: Kill and Water Ritual numbers now use the game's own formulas; for most legendaries a kill used to show far too little. Kills show the worst roll. Works with any faction you can see, including villages, other mods and DLC. New "Other factions" setting.
 
-v1.4 - Quick hotfix - Fixed Reputation Assistant not working properly when the advanced option "Show reputation with a creature's factions when looking at them" is enabled (thanks to Reddit user Accio-Books!)
+v1.5: Duplicate factions merge into one line. "Show Creature's Own Faction" lists all of the creature's factions.
+
+v1.4: Fixed the tracker when the advanced option "Show reputation with a creature's factions when looking at them" is on. Thanks to Reddit user Accio-Books!
