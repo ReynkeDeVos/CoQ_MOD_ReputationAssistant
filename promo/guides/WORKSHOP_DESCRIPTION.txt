@@ -1,6 +1,6 @@
 Look at anyone whose death or Water Ritual changes your reputation, and the popup shows each faction involved, how much it matters, and what a ritual or a kill would do.
 
-1.6 works with the latest Caves of Qud (2.0.211.56). Older versions of this mod showed the wrong kill and Water Ritual numbers.
+1.6 works with the latest Caves of Qud (2.0.211.56).
 
 [code]
 === Reputation Assistant ===
@@ -18,6 +18,8 @@ Look at anyone whose death or Water Ritual changes your reputation, and the popu
 [b]Spoilers:[/b] the priorities come from A-F-F-I-N-E's [url=https://www.qudzoo.com/advice/reputation]reputation guide[/url] and give away which factions matter later.
 
 Change priorities, targets and the layout under [b]Mod: Reputation Assistant[/b] in the options. It works with villages and with factions from other mods or DLC, and it's safe to add or remove mid-game.
+
+It pairs well with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3507307896]You Spot a Legendary![/url] by Cattlesquat, which tells you when a legendary shows up.
 
 Source on [url=https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant]GitHub[/url].
 
