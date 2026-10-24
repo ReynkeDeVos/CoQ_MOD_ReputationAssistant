@@ -2,6 +2,8 @@
 
 A [Caves of Qud](https://store.steampowered.com/app/333640/Caves_of_Qud/) mod. Look at anyone whose death or Water Ritual changes your reputation, and the popup shows each faction involved, how much it matters, and what a ritual or a kill would do.
 
+1.6 works with the latest Caves of Qud (2.0.211.56). Older versions of this mod showed the wrong kill and Water Ritual numbers.
+
 Get it on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3664930126).
 
 <img src="promo/assets/screenshot_v1.6.png" alt="The tracker under Warden Yrame's description" height="400" />
