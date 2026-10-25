@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- A line under the title lists the factions a kill would hurt, most important first: `Kill hurts: Naphtaali tribe, villagers of Joppa`. A kill hurts a faction when it lowers your reputation there and leaves it below the target. A long list ends in "and 2 more", and a safe kill reads `Kill hurts: none`. For a water-bonded creature, the bond warning above it covers every faction.
+- With Water Ritual / Kill outcomes shown (the default), a line under the title lists the factions a kill would hurt, most important first: `Kill hurts: Naphtaali tribe, villagers of Joppa`. A kill hurts a faction when it lowers your reputation there and leaves it below the target. A long list ends in "and 2 more", and a safe kill reads `Kill hurts: none`. For a water-bonded creature, the bond warning above it covers every faction.
 
 ### Changed
 
@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - "WR" now reads "Ritual".
 - The compact layout labels its numbers: `Rep -150  target 0 │ Ritual -50 │ Kill -370` instead of `-150 / 0  WR→-50  Kill→-370`, where the slash and arrows were nearly invisible.
 - Priority 3 tags are cyan instead of gold, so they no longer run into the gold faction name.
-- The section title always names the creature's own factions, as in "Member of Fellowship of Wardens". The "Show Creature's Own Faction" option is gone.
+- The section title always names the creature's own factions, as in "Member of Fellowship of Wardens", on every creature that has one, even when it doesn't change your reputation. The "Show Creature's Own Faction" option is gone.
 - The water-bond warning fits on one line.
 - Configure Faction lists factions by the names the game shows, so you'll find "Grazing hedonists" rather than "Prey" and "Cult of the Coiled Lamb" rather than "Resheph". Saved settings carry over.
 

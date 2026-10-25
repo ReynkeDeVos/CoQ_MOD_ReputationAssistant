@@ -31,7 +31,8 @@ namespace Kawa.ReputationAssistant
         // Not gold: faction names are gold, and a gold tag would run into them.
         static readonly string[] TierColors = {"w", "y", "c", "C", "O", "M", "R"};
 
-        // The look popup wraps here, and a wrapped line loses its indent.
+        // A wrapped line loses its indent, so lines stay within the narrowest look popup seen (the 1.2 capture).
+        // shortcut: the popup wraps by pixels and fits 78 columns at 1920x1080; measure it if "and N more" cuts lists short.
         const int PopupWidth = 58;
 
         // ── Public API ──────────────────────────────────────────────────
