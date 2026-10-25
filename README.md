@@ -6,7 +6,9 @@ A [Caves of Qud](https://store.steampowered.com/app/333640/Caves_of_Qud/) mod. L
 
 Get it on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3664930126).
 
-<img src="promo/assets/promo_v1.7.gif" alt="Looking at Mehmet, Warden Yrame, and Mehmet after the water ritual: under each description, a line names the factions a kill would hurt, then each faction's priority, reputation, target and the ritual and kill results" height="500" />
+<img src="promo/assets/promo_v1.7.gif" alt="In-game reputation sections for Mehmet, Warden Yrame, compact Mehmet, and water-bonded Mehmet, showing the kill verdict, faction priorities, reputation, targets and outcomes" height="500" />
+
+[Watch the in-game 1.7 preview with music](promo/assets/promo_v1.7.mp4) — “Mehmet's Morning” by Craig Hamilton (Caves of Qud OST).
 
 - The line under the title lists the factions a kill would hurt, most important first: it lowers your reputation there and leaves it below the target.
 - The tag is the faction's priority, from 0 to 6. Try to stay at or above the target.
