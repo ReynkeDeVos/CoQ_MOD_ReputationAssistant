@@ -1,15 +1,12 @@
+[h1]New version 1.7: works with the latest Caves of Qud (2.0.211.56)[/h1]
+[b]A big code cleanup and a clearer, easier-to-read popup. Sorry the mod didn't work for a while.[/b]
+
 Look at anyone whose death or Water Ritual changes your reputation, and the popup shows each faction involved, how much it matters, and what a ritual or a kill would do.
 
-1.6 works with the latest Caves of Qud (2.0.211.56).
-
-[code]
-=== Reputation Assistant ===
-  [5/6 High Priority] Naphtaali tribe
-    Rep -350  target -249
-    WR +100 = -250  │  Kill -220 = -570
-[/code]
+[img]https://raw.githubusercontent.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/main/promo/assets/promo_v1.7.gif[/img]
 
 [list]
+[*]The line under the title lists the factions a kill would hurt, most important first: it lowers your reputation there and leaves it below the target.
 [*]The tag is the faction's priority, from 0 to 6. Try to stay at or above the target.
 [*]Green reaches the target or moves toward it. Red leaves you below it.
 [*]Kills show the worst roll. Water Ritual numbers are for a plain ritual.

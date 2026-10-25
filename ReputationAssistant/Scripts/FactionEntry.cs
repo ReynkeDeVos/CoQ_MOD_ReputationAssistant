@@ -39,5 +39,8 @@ namespace Kawa.ReputationAssistant
 
         /// <summary>Kill outcome is at/above target, or moving toward it.</summary>
         public bool IsKillSafe => KillResult >= TargetRep || KillResult > CurrentRep;
+
+        /// <summary>The kill lowers rep and leaves it below target: a red Kill number other than +0.</summary>
+        public bool IsKillHurt => KillChange < 0 && KillResult < TargetRep;
     }
 }
