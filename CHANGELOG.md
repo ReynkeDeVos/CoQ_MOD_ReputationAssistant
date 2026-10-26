@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.7.1] - 2026-10-26
 
-### Added
+### Changed
 
-- An option to hide the "Kill hurts:" line. It's on by default.
+- The "Kill hurts:" line is off by default, since it mostly repeats the creature's own faction. Turn it on with Show "Kill hurts:" Line under Mod: Reputation Assistant in the options.
 
 ## [1.7] - 2026-10-26
 

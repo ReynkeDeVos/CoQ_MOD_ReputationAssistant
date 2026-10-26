@@ -1,1 +1,1 @@
-1.7.1: The "Kill hurts:" line can be turned off under Mod: Reputation Assistant in the options. It's on by default.
+1.7.1: The "Kill hurts:" line is off by default now, since it mostly repeated the creature's own faction. Turn it on under Mod: Reputation Assistant in the options.

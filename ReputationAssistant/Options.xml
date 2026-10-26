@@ -36,12 +36,13 @@
           DisplayText="Show &quot;Kill hurts:&quot; Line"
           Category="Mod: Reputation Assistant"
           Type="Checkbox"
-          Default="Yes"
+          Default="No"
           Requires="OptionRAEnabled==Yes,OptionRAShowOutcomes==Yes"
           SearchKeywords="reputation assistant kill hurts verdict">
     <helptext>
       Show a line under the title that names the factions a kill would hurt.
-      Default: On
+      It often just repeats the creature's own faction.
+      Default: Off
     </helptext>
   </option>
 
