@@ -1,0 +1,11 @@
+[h2]1.7: works with the latest Caves of Qud (2.0.211.56)[/h2]
+[b]A big code cleanup and a clearer, easier-to-read popup. Sorry the mod didn't work for a while.[/b]
+
+[list]
+[*]New: a line under the title lists the factions a kill would hurt, most important first, like "Kill hurts: Naphtaali tribe, villagers of Joppa". A safe kill reads "Kill hurts: none".
+[*]The section title is readable now and always names the creature's own factions ("Member of …"). The Show Creature's Own Faction option is gone.
+[*]"WR" now reads "Ritual", and the compact layout labels its numbers.
+[*]Priority 3 tags are cyan, so they no longer run into the gold faction names.
+[*]Every line fits the popup, so nothing wraps.
+[*]Configure Faction uses the names the game shows: "Grazing hedonists", not "Prey". Your settings carry over.
+[/list]

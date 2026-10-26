@@ -5,6 +5,24 @@ All notable changes to the Reputation Assistant mod will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7] - 2026-10-26
+
+**A new version that works with the latest Caves of Qud (2.0.211.56), with a big code cleanup and a clearer, easier-to-read popup. Sorry the mod didn't work for a while.**
+
+### Added
+
+- With Water Ritual / Kill outcomes shown (the default), a line under the title lists the factions a kill would hurt, most important first: `Kill hurts: Naphtaali tribe, villagers of Joppa`. A kill hurts a faction when it lowers your reputation there and leaves it below the target. A long list ends in "and 2 more", and a safe kill reads `Kill hurts: none`. For a water-bonded creature, the bond warning above it covers every faction.
+
+### Changed
+
+- The section title is readable now. It used the game's darkest grey and almost disappeared against the popup.
+- "WR" now reads "Ritual".
+- The compact layout labels its numbers: `Rep -150  target 0 │ Ritual -50 │ Kill -370` instead of `-150 / 0  WR→-50  Kill→-370`, where the slash and arrows were nearly invisible.
+- Priority 3 tags are cyan instead of gold, so they no longer run into the gold faction name.
+- The section title always names the creature's own factions, as in "Member of Fellowship of Wardens", on every creature that has one, even when it doesn't change your reputation. The "Show Creature's Own Faction" option is gone.
+- The water-bond warning fits on one line.
+- Configure Faction lists factions by the names the game shows, so you'll find "Grazing hedonists" rather than "Prey" and "Cult of the Coiled Lamb" rather than "Resheph". Saved settings carry over.
+
 ## [1.6] - 2026-10-24
 
 Checked against Caves of Qud 2.0.211.56.
@@ -143,6 +161,8 @@ Clean-up, stabilizing, and testing with other faction mods is still ongoing; a p
 
 ---
 
+[1.7]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.7
+[1.6]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.6
 [1.5]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.5
 [1.4]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.4
 [1.3]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.3

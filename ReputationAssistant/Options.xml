@@ -45,24 +45,12 @@
     </helptext>
   </option>
 
-  <option ID="OptionRAShowFaction"
-          DisplayText="Show Creature's Own Faction"
-          Category="Mod: Reputation Assistant"
-          Type="Checkbox"
-          Default="No"
-          Requires="OptionRAEnabled==Yes"
-          SearchKeywords="reputation assistant faction membership creature show">
-    <helptext>
-      Display the looked-at creature's own faction(s) in the look popup description. Default: Off
-    </helptext>
-  </option>
-
   <!-- ===== Per-Faction Overrides ===== -->
   <option ID="OptionRAFaction"
           DisplayText="Configure Faction"
           Category="Mod: Reputation Assistant"
           Type="Combo"
-          Values="(None),Other factions,Antelopes,Apes,Arachnids,Baboons,Baetyls,Barathrumites,Bears,Birds,Cannibals,Cats,Chavvah,Consortium,Crabs,Cragmensch,Daughters,Dogs,Dromad,Entropic,Equines,Ezra,Farmers,Fish,Flowers,Foxen,Frogs,Fungi,Girsh,Goatfolk,Gyre Wights,Hermits,Hindren,Insects,Issachari,Joppa,Kyakukya,Mamon,Mechanimists,Merchants,Mollusks,Mopango,Naphtaali,Newly Sentient Beings,Oozes,Pariahs,Prey,Resheph,Robots,Roots,Seekers,Snailfolk,Snapjaws,Strangers,Succulents,SultanCult1,SultanCult2,SultanCult3,SultanCult4,SultanCult5,Svardym,Swine,Templar (Mutant),Templar (True Kin),Tortoises,Trees,Trolls,Unshelled Reptiles,Urchins,Vines,Wardens,Water,Winged Mammals,Worms,YdFreehold"
+          Values="(None),Other factions,Antelopes,Apes,Arachnids,Baboons,Baetyls,Barathrumites,Bears,Birds,Cannibals,Cats,Chavvah,Mamon|Children of Mamon,Consortium|Consortium of Phyta,Crabs,Cragmensch,SultanCult1|Cult of the 1st sultan,SultanCult2|Cult of the 2nd sultan,SultanCult3|Cult of the 3rd sultan,SultanCult4|Cult of the 4th sultan,SultanCult5|Cult of the 5th sultan,Resheph|Cult of the Coiled Lamb,Daughters|Daughters of Exile,YdFreehold|Denizens of the Yd Freehold,Dogs,Dromad|Dromad merchants,Equines,Farmers|Farmers' Guild,Wardens|Fellowship of Wardens,Fish,Flowers,Foxen,Frogs,Fungi,Girsh,Goatfolk,Prey|Grazing hedonists,Gyre Wights|Gyre wights,Hermits,Entropic|Highly entropic beings,Hindren|Hindren of Bey Lah,Insects,Issachari|Issachari tribe,Mechanimists,Merchants|Merchants' Guild,Mollusks,Mopango,Strangers|Mysterious strangers,Naphtaali|Naphtaali tribe,Newly Sentient Beings|Newly sentient beings,Oozes,Pariahs,Templar (Mutant)|Putus Templar (mutant),Templar (True Kin)|Putus Templar (True Kin),Robots,Roots,Seekers|Seekers of the Sightless Way,Snailfolk,Snapjaws,Succulents,Svardym,Swine,Tortoises,Trees,Trolls,Unshelled Reptiles|Unshelled reptiles,Urchins,Ezra|Villagers of Ezra,Joppa|Villagers of Joppa,Kyakukya|Villagers of Kyakukya,Vines,Water|Water barons,Winged Mammals|Winged mammals,Worms"
           Default="(None)"
           Requires="OptionRAEnabled==Yes"
           SearchKeywords="reputation assistant faction configure override">

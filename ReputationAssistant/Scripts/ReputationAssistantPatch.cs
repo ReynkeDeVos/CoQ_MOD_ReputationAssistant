@@ -2,9 +2,9 @@
 // Author: Kawa | License: MIT
 //
 // Postfix-patches Description.GetLongDescription (the look popup) to append
-// a reputation tracker for creatures with a GivesRep part: priority,
-// current/target rep, and Water Ritual / kill projections.
-// Optionally shows the looked-at creature's own factions as the section title.
+// a reputation tracker for creatures with a GivesRep part: a one-line kill
+// verdict, then priority, current/target rep, and Water Ritual / kill projections.
+// The section title names the looked-at creature's own factions.
 //
 // Reputation mechanics: https://wiki.cavesofqud.com/wiki/Reputation
 // Color codes: https://wiki.cavesofqud.com/wiki/Modding:Colors_%26_Object_Rendering
@@ -36,7 +36,7 @@ namespace Kawa.ReputationAssistant
                 var creature = __instance.ParentObject;
                 if (creature?.Brain == null) return;
 
-                string title = OptionEnabled("OptionRAShowFaction") ? OwnFactionNames(creature) : null;
+                List<string> ownFactions = OwnFactionNames(creature);
 
                 var givesRep = creature.GetPart<GivesRep>();
                 var playerRep = The.Game?.PlayerReputation;
@@ -46,12 +46,13 @@ namespace Kawa.ReputationAssistant
                     : null;
                 bool hasEntries = entries != null && entries.Count > 0;
 
-                if (title == null && !hasEntries) return;
+                if (ownFactions == null && !hasEntries) return;
 
-                ReputationRenderer.RenderSectionHeader(SB, title, givesRep?.wasParleyed == true);
+                bool bonded = givesRep?.wasParleyed == true;
+                ReputationRenderer.RenderSectionHeader(SB, ownFactions, bonded);
 
                 if (hasEntries)
-                    ReputationRenderer.RenderTracker(SB, entries,
+                    ReputationRenderer.RenderTracker(SB, entries, bonded,
                         showOutcomes: OptionEnabled("OptionRAShowOutcomes"),
                         showWR: !wrDone,
                         compact: OptionEnabled("OptionRACompactLayout"));
@@ -78,7 +79,7 @@ namespace Kawa.ReputationAssistant
         }
 
         /// <summary>The creature's visible factions: primary first, the rest alphabetical. Null if none.</summary>
-        static string OwnFactionNames(GameObject creature)
+        static List<string> OwnFactionNames(GameObject creature)
         {
             string primary = null;
             var others = new List<string>();
@@ -105,7 +106,7 @@ namespace Kawa.ReputationAssistant
                 others.Insert(0, primary);
             }
 
-            return others.Count > 0 ? string.Join(", ", others) : null;
+            return others.Count > 0 ? others : null;
         }
 
         static bool OptionEnabled(string id) =>
