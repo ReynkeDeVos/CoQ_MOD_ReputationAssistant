@@ -74,13 +74,13 @@ namespace Kawa.ReputationAssistant
         /// <param name="showWR">False once the Water Ritual is done; there's nothing left to project.</param>
         /// <param name="showVerdict">The "Kill hurts:" line, an option of its own.</param>
         internal static void RenderTracker(StringBuilder sb, List<FactionEntry> entries,
-            bool bonded, bool showOutcomes, bool showWR, bool compact, bool showVerdict = true)
+            bool bonded, bool showOutcomes, bool showWR, bool compact, bool showVerdict)
         {
             bool verdict = showOutcomes && showVerdict;
             if (verdict)
                 RenderKillVerdict(sb, entries, bonded);
 
-            bool first = !verdict; // only the verdict line gets a blank line after it; without it, the entries follow the title
+            bool first = !verdict; // with the verdict on, a blank line follows the title block; without it, the entries follow the title
 
             foreach (var e in entries)
             {
