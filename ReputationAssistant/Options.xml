@@ -32,6 +32,19 @@
     </helptext>
   </option>
 
+  <option ID="OptionRAShowKillVerdict"
+          DisplayText="Show &quot;Kill hurts:&quot; Line"
+          Category="Mod: Reputation Assistant"
+          Type="Checkbox"
+          Default="Yes"
+          Requires="OptionRAEnabled==Yes,OptionRAShowOutcomes==Yes"
+          SearchKeywords="reputation assistant kill hurts verdict">
+    <helptext>
+      Show a line under the title that names the factions a kill would hurt.
+      Default: On
+    </helptext>
+  </option>
+
   <option ID="OptionRACompactLayout"
           DisplayText="Compact Layout (single line)"
           Category="Mod: Reputation Assistant"
