@@ -55,7 +55,8 @@ namespace Kawa.ReputationAssistant
                     ReputationRenderer.RenderTracker(SB, entries, bonded,
                         showOutcomes: OptionEnabled("OptionRAShowOutcomes"),
                         showWR: !wrDone,
-                        compact: OptionEnabled("OptionRACompactLayout"));
+                        compact: OptionEnabled("OptionRACompactLayout"),
+                        showVerdict: OptionEnabled("OptionRAShowKillVerdict"));
             }
             catch (Exception ex)
             {

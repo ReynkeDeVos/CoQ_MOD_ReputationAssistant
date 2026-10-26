@@ -5,6 +5,12 @@ All notable changes to the Reputation Assistant mod will be documented in this f
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.1] - 2026-10-26
+
+### Changed
+
+- The "Kill hurts:" line is off by default, since it mostly repeats the creature's own faction. Turn it on with Show "Kill hurts:" Line under Mod: Reputation Assistant in the options.
+
 ## [1.7] - 2026-10-26
 
 **A new version that works with the latest Caves of Qud (2.0.211.56), with a big code cleanup and a clearer, easier-to-read popup. Sorry the mod didn't work for a while.**
@@ -161,6 +167,7 @@ Clean-up, stabilizing, and testing with other faction mods is still ongoing; a p
 
 ---
 
+[1.7.1]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.7.1
 [1.7]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.7
 [1.6]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.6
 [1.5]: https://github.com/ReynkeDeVos/CoQ_MOD_ReputationAssistant/releases/tag/v1.5

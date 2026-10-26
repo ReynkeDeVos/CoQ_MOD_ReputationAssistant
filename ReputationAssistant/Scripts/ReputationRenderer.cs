@@ -68,24 +68,24 @@ namespace Kawa.ReputationAssistant
         }
 
         /// <summary>
-        /// Appends the kill verdict (with outcomes on) and the reputation tracker entries.
+        /// Appends the kill verdict (with outcomes and its option on) and the reputation tracker entries.
         /// </summary>
         /// <param name="bonded">Water-bonded: the kill also costs factions that aren't listed.</param>
         /// <param name="showWR">False once the Water Ritual is done; there's nothing left to project.</param>
+        /// <param name="showVerdict">The "Kill hurts:" line, an option of its own.</param>
         internal static void RenderTracker(StringBuilder sb, List<FactionEntry> entries,
-            bool bonded, bool showOutcomes, bool showWR, bool compact)
+            bool bonded, bool showOutcomes, bool showWR, bool compact, bool showVerdict = true)
         {
-            if (showOutcomes)
+            bool verdict = showOutcomes && showVerdict;
+            if (verdict)
                 RenderKillVerdict(sb, entries, bonded);
-
-            bool first = !showOutcomes; // with outcomes on, a blank line follows the title block
 
             foreach (var e in entries)
             {
                 int tier = Math.Max(0, Math.Min(e.Importance, 6));
 
-                sb.Append(first ? "\n" : "\n\n");
-                first = false;
+                // A blank line before each entry, the first included, sets the entries apart from the title block.
+                sb.Append("\n\n");
 
                 RenderEntryHeader(sb, e, tier);
 
@@ -189,7 +189,7 @@ namespace Kawa.ReputationAssistant
         }
 
         /// <summary>
-        /// Compact layout — one data line per faction, results only. Fits the
+        /// Compact layout: one data line per faction, results only. Fits the
         /// look popup's 58 columns.
         ///   Rep -150  target    0 │ Ritual  -50 │ Kill -370
         /// </summary>
@@ -212,7 +212,7 @@ namespace Kawa.ReputationAssistant
         }
 
         /// <summary>
-        /// Default layout — separate lines for rep and outcomes.
+        /// Default layout: separate lines for rep and outcomes.
         ///   Rep -150  target    0
         ///   Ritual +100 =  -50  │  Kill -220 = -370
         /// </summary>

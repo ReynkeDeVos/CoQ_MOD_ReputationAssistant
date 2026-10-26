@@ -2,7 +2,7 @@
   "id": "Kawa_ReputationAssistant",
   "title": "{{M|Reputation Assistant}}",
   "description": "Shows which factions a creature's death or Water Ritual affects, how much each one matters, and what you'd gain or lose.\n\nPriorities come from the qudzoo.com reputation guide. Change them in the options menu.",
-  "version": "1.7",
+  "version": "1.7.1",
   "author": "Kawa",
   "tags": "UX,Script,Faction",
   "previewImage": "icon.png"

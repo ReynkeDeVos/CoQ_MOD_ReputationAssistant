@@ -8,9 +8,9 @@ Get it on the [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetail
 
 <img src="promo/assets/promo_v1.7.gif" alt="In-game reputation sections for Mehmet, Warden Yrame, compact Mehmet, and water-bonded Mehmet, showing the kill verdict, faction priorities, reputation, targets and outcomes" height="500" />
 
-[Watch the in-game 1.7 preview with music](promo/assets/promo_v1.7.mp4) — “Live and Drink” by Craig Hamilton (Caves of Qud OST). The music isn't covered by this repo's MIT license.
+[Watch the in-game preview with music](https://cdn.jsdelivr.net/gh/ReynkeDeVos/CoQ_MOD_ReputationAssistant@v1.7.1/promo/assets/promo_v1.7.mp4). The music is "Live and Drink" by Craig Hamilton, from the Caves of Qud soundtrack, and isn't covered by this repo's MIT license.
 
-- The line under the title lists the factions a kill would hurt, most important first: it lowers your reputation there and leaves it below the target.
+- The line under the title (optional, off by default) lists the factions a kill would hurt, most important first: it lowers your reputation there and leaves it below the target.
 - The tag is the faction's priority, from 0 to 6. Try to stay at or above the target.
 - Green reaches the target or moves toward it. Red leaves you below it.
 - Kills show the worst roll. Water Ritual numbers are for a plain ritual.
