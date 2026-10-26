@@ -80,12 +80,14 @@ namespace Kawa.ReputationAssistant
             if (verdict)
                 RenderKillVerdict(sb, entries, bonded);
 
+            bool first = !verdict; // only the verdict line gets a blank line after it; without it, the entries follow the title
+
             foreach (var e in entries)
             {
                 int tier = Math.Max(0, Math.Min(e.Importance, 6));
 
-                // A blank line before each entry, the first included, sets the entries apart from the title block.
-                sb.Append("\n\n");
+                sb.Append(first ? "\n" : "\n\n");
+                first = false;
 
                 RenderEntryHeader(sb, e, tier);
 
