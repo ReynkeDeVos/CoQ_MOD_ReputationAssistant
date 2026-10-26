@@ -68,7 +68,7 @@ namespace Kawa.ReputationAssistant
         }
 
         /// <summary>
-        /// Appends the kill verdict (with outcomes on) and the reputation tracker entries.
+        /// Appends the kill verdict (with outcomes and its option on) and the reputation tracker entries.
         /// </summary>
         /// <param name="bonded">Water-bonded: the kill also costs factions that aren't listed.</param>
         /// <param name="showWR">False once the Water Ritual is done; there's nothing left to project.</param>
@@ -80,14 +80,12 @@ namespace Kawa.ReputationAssistant
             if (verdict)
                 RenderKillVerdict(sb, entries, bonded);
 
-            bool first = !verdict; // with the verdict, a blank line follows the title block
-
             foreach (var e in entries)
             {
                 int tier = Math.Max(0, Math.Min(e.Importance, 6));
 
-                sb.Append(first ? "\n" : "\n\n");
-                first = false;
+                // A blank line before each entry, the first included, sets the entries apart from the title block.
+                sb.Append("\n\n");
 
                 RenderEntryHeader(sb, e, tier);
 
