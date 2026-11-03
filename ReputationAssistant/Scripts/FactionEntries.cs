@@ -20,13 +20,13 @@ using XRL.World.Parts;
 
 namespace Kawa.ReputationAssistant
 {
-    static class FactionEntries
+    internal static class FactionEntries
     {
         // Highest priority first, then alphabetical.
-        static readonly Comparison<FactionEntry> ByPriority = (a, b) =>
+        private static readonly Comparison<FactionEntry> ByPriority = (a, b) =>
         {
             int cmp = b.Importance.CompareTo(a.Importance);
-            return cmp != 0 ? cmp : string.Compare(a.DisplayName, b.DisplayName, StringComparison.OrdinalIgnoreCase);
+            return cmp is not 0 ? cmp : string.Compare(a.DisplayName, b.DisplayName, StringComparison.OrdinalIgnoreCase);
         };
 
         /// <param name="wrDone">The Water Ritual already happened, so it has nothing left to award.</param>
@@ -34,12 +34,12 @@ namespace Kawa.ReputationAssistant
         {
             int rep = givesRep.repValue;
             int Kill(string status) => ReputationMath.WorstRoll(ReputationMath.KillChange(status, rep));
-            var changes = new Dictionary<string, (Faction faction, int wr, int kill)>();
+            var changes = new Dictionary<string, (Faction faction, int wr, int kill)>(StringComparer.Ordinal);
 
             void Add(string factionName, int wr, int kill)
             {
                 var faction = Factions.GetIfExists(factionName);
-                if (faction == null || !faction.Visible)
+                if (faction is null || !faction.Visible)
                     return;
 
                 changes.TryGetValue(faction.Name, out var sum);
@@ -60,7 +60,7 @@ namespace Kawa.ReputationAssistant
             if (!wrDone)
             {
                 string primary = creature.GetPart<WaterRitualRecord>()?.faction;
-                if (primary == null)
+                if (primary is null)
                 {
                     string key = creature.GetPrimaryFaction(Base: true);
                     primary = (Factions.GetIfExists(key) ?? Factions.GetByDisplayName(key))?.Name;
@@ -68,7 +68,7 @@ namespace Kawa.ReputationAssistant
 
                 Add(primary, rep, 0);
                 foreach (var membership in creature.Brain.GetBaseAllegiance())
-                    if (membership.Key != primary)
+                    if (!string.Equals(membership.Key, primary, StringComparison.Ordinal))
                         Add(membership.Key, rep, 0);
             }
 
@@ -83,7 +83,7 @@ namespace Kawa.ReputationAssistant
                     playerRep.Get(faction),
                     target,
                     priority,
-                    isSpecial: faction.Name == "Mechanimists", // the guide rates them outside the tiers
+                    isSpecial: faction.Name is "Mechanimists", // the guide rates them outside the tiers
                     wr,
                     brokenBond ? kill + ReputationMath.WorstRoll(ReputationMath.BrokenBondChange) : kill));
             }

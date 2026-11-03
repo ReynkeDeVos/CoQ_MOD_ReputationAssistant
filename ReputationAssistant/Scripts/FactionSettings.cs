@@ -6,16 +6,17 @@
 // Factions without their own sliders (villages, modded or DLC factions) use the "Other" sliders.
 
 using System;
+using System.Globalization;
 using XRL;
 using XRL.UI;
 
 namespace Kawa.ReputationAssistant
 {
-    static class FactionSettings
+    internal static class FactionSettings
     {
         // qudzoo's advice for random villages; only used if the options can't be read at all.
-        const int FallbackPriority = 1;
-        const int FallbackTarget = -249;
+        private const int FallbackPriority = 1;
+        private const int FallbackTarget = -249;
 
         internal static void Get(string factionName, out int priority, out int target)
         {
@@ -28,19 +29,24 @@ namespace Kawa.ReputationAssistant
             target = Math.Max(-600, Math.Min(target, 600));
         }
 
-        static string OptionKey(string factionName)
+        private static string OptionKey(string factionName)
         {
             // The guide rates Putus Templar by the player's genotype.
-            if (factionName == "Templar")
-                return The.Player?.IsTrueKin() == true ? "Templar_TrueKin" : "Templar_Mutant";
+            if (factionName is "Templar")
+                return The.Player?.IsTrueKin() is true ? "Templar_TrueKin" : "Templar_Mutant";
 
             // Keys spell spaces as '_'. An id that already has '_', or one that would spell a
             // Templar genotype key ("Templar Mutant"), would borrow another faction's sliders.
             string key = factionName.Replace(' ', '_');
-            return factionName.IndexOf('_') >= 0 || key.StartsWith("Templar_") ? "Other" : key;
+            return factionName.IndexOf('_', StringComparison.Ordinal) >= 0 || key.StartsWith("Templar_", StringComparison.Ordinal)
+                ? "Other"
+                : key;
         }
 
-        static int? Read(string key, string setting) =>
-            int.TryParse(Options.GetOption("OptionRA_" + key + "_" + setting), out int value) ? value : (int?)null;
+        private static int? Read(string key, string setting) =>
+            int.TryParse(Options.GetOption("OptionRA_" + key + "_" + setting),
+                    NumberStyles.Integer, CultureInfo.InvariantCulture, out int value)
+                ? value
+                : (int?)null;
     }
 }

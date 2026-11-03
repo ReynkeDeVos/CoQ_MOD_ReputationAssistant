@@ -10,7 +10,7 @@ using System;
 
 namespace Kawa.ReputationAssistant
 {
-    static class ReputationMath
+    internal static class ReputationMath
     {
         /// <summary>Killing a water-bonded creature costs about this much with every faction that doesn't hate you.</summary>
         internal const int BrokenBondChange = -100;
@@ -47,11 +47,11 @@ namespace Kawa.ReputationAssistant
         }
 
         // Same float arithmetic as GivesRep.VaryRep, with the roll fixed instead of random.
-        static int Vary(int rep, int roll)
+        private static int Vary(int rep, int roll)
         {
             float value = rep;
             value += 0.1f * value * roll / 5f;
-            return 5 * (int)Math.Round(value / 5f);
+            return 5 * (int)Math.Round(value / 5f, MidpointRounding.ToEven);
         }
     }
 }
