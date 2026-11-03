@@ -4,7 +4,7 @@
 namespace Kawa.ReputationAssistant
 {
     /// <summary>One faction's line in the tracker: settings plus current and projected reputation.</summary>
-    readonly struct FactionEntry
+    internal readonly struct FactionEntry
     {
         public readonly string DisplayName;
         public readonly int CurrentRep;
@@ -16,8 +16,13 @@ namespace Kawa.ReputationAssistant
 
         public FactionEntry(
             string displayName,
-            int currentRep, int targetRep, int importance, bool isSpecial,
-            int wrChange, int killChange)
+            int currentRep,
+            int targetRep,
+            int importance,
+            bool isSpecial,
+            int wrChange,
+            int killChange
+        )
         {
             DisplayName = displayName;
             CurrentRep = currentRep;

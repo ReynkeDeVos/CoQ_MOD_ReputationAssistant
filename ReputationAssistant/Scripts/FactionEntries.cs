@@ -20,26 +20,36 @@ using XRL.World.Parts;
 
 namespace Kawa.ReputationAssistant
 {
-    static class FactionEntries
+    internal static class FactionEntries
     {
         // Highest priority first, then alphabetical.
-        static readonly Comparison<FactionEntry> ByPriority = (a, b) =>
+        private static readonly Comparison<FactionEntry> ByPriority = (a, b) =>
         {
             int cmp = b.Importance.CompareTo(a.Importance);
-            return cmp != 0 ? cmp : string.Compare(a.DisplayName, b.DisplayName, StringComparison.OrdinalIgnoreCase);
+            return cmp is not 0
+                ? cmp
+                : string.Compare(a.DisplayName, b.DisplayName, StringComparison.OrdinalIgnoreCase);
         };
 
         /// <param name="wrDone">The Water Ritual already happened, so it has nothing left to award.</param>
-        internal static List<FactionEntry> Collect(GameObject creature, GivesRep givesRep, Reputation playerRep, bool wrDone)
+        internal static List<FactionEntry> Collect(
+            GameObject creature,
+            GivesRep givesRep,
+            Reputation playerRep,
+            bool wrDone
+        )
         {
             int rep = givesRep.repValue;
-            int Kill(string status) => ReputationMath.WorstRoll(ReputationMath.KillChange(status, rep));
-            var changes = new Dictionary<string, (Faction faction, int wr, int kill)>();
+            int Kill(string status) =>
+                ReputationMath.WorstRoll(ReputationMath.KillChange(status, rep));
+            var changes = new Dictionary<string, (Faction faction, int wr, int kill)>(
+                StringComparer.Ordinal
+            );
 
             void Add(string factionName, int wr, int kill)
             {
                 var faction = Factions.GetIfExists(factionName);
-                if (faction == null || !faction.Visible)
+                if (faction is null || !faction.Visible)
                     return;
 
                 changes.TryGetValue(faction.Name, out var sum);
@@ -47,20 +57,24 @@ namespace Kawa.ReputationAssistant
             }
 
             // GetLovedFactions refills one shared list, so read it right away.
-            foreach (var loved in givesRep.GetLovedFactions(25, VisibleOnly: true, WithoutReason: true))
+            foreach (
+                var loved in givesRep.GetLovedFactions(25, VisibleOnly: true, WithoutReason: true)
+            )
                 Add(loved.Name, 0, Kill("love"));
 
             foreach (var related in givesRep.relatedFactions)
-                Add(related.faction,
+                Add(
+                    related.faction,
                     wrDone ? 0 : ReputationMath.WaterRitualChange(related.status, rep),
-                    Kill(related.status));
+                    Kill(related.status)
+                );
 
             // The Water Ritual gives +repValue with the creature's primary faction, then with each other
             // faction it belongs to. The game resolves the primary by id or display name, once, into the record.
             if (!wrDone)
             {
                 string primary = creature.GetPart<WaterRitualRecord>()?.faction;
-                if (primary == null)
+                if (primary is null)
                 {
                     string key = creature.GetPrimaryFaction(Base: true);
                     primary = (Factions.GetIfExists(key) ?? Factions.GetByDisplayName(key))?.Name;
@@ -68,7 +82,7 @@ namespace Kawa.ReputationAssistant
 
                 Add(primary, rep, 0);
                 foreach (var membership in creature.Brain.GetBaseAllegiance())
-                    if (membership.Key != primary)
+                    if (!string.Equals(membership.Key, primary, StringComparison.Ordinal))
                         Add(membership.Key, rep, 0);
             }
 
@@ -78,14 +92,19 @@ namespace Kawa.ReputationAssistant
                 FactionSettings.Get(faction.Name, out int priority, out int target);
                 bool brokenBond = givesRep.wasParleyed && !faction.HatesPlayer;
 
-                entries.Add(new FactionEntry(
-                    faction.DisplayName,
-                    playerRep.Get(faction),
-                    target,
-                    priority,
-                    isSpecial: faction.Name == "Mechanimists", // the guide rates them outside the tiers
-                    wr,
-                    brokenBond ? kill + ReputationMath.WorstRoll(ReputationMath.BrokenBondChange) : kill));
+                entries.Add(
+                    new FactionEntry(
+                        faction.DisplayName,
+                        playerRep.Get(faction),
+                        target,
+                        priority,
+                        isSpecial: faction.Name is "Mechanimists", // the guide rates them outside the tiers
+                        wr,
+                        brokenBond
+                            ? kill + ReputationMath.WorstRoll(ReputationMath.BrokenBondChange)
+                            : kill
+                    )
+                );
             }
 
             entries.Sort(ByPriority);
