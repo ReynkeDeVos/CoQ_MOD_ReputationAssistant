@@ -16,8 +16,13 @@ namespace Kawa.ReputationAssistant
 
         public FactionEntry(
             string displayName,
-            int currentRep, int targetRep, int importance, bool isSpecial,
-            int wrChange, int killChange)
+            int currentRep,
+            int targetRep,
+            int importance,
+            bool isSpecial,
+            int wrChange,
+            int killChange
+        )
         {
             DisplayName = displayName;
             CurrentRep = currentRep;

@@ -16,25 +16,27 @@ namespace Kawa.ReputationAssistant
         internal const int BrokenBondChange = -100;
 
         /// <summary>Kill award before the game's random variance (see <see cref="WorstRoll"/>).</summary>
-        internal static int KillChange(string status, int repValue) => status switch
-        {
-            "love" or "friend" => -2 * repValue,
-            "dislike" => repValue,
-            "hate" => 2 * repValue,
-            _ => 0,
-        };
+        internal static int KillChange(string status, int repValue) =>
+            status switch
+            {
+                "love" or "friend" => -2 * repValue,
+                "dislike" => repValue,
+                "hate" => 2 * repValue,
+                _ => 0,
+            };
 
         /// <summary>
         /// Water Ritual award for a related faction, for a plain ritual. "love" gets nothing here;
         /// the creature's own factions get +repValue instead.
         /// </summary>
-        internal static int WaterRitualChange(string status, int repValue) => status switch
-        {
-            "friend" => repValue,
-            "dislike" => -repValue / 2,
-            "hate" => -repValue,
-            _ => 0,
-        };
+        internal static int WaterRitualChange(string status, int repValue) =>
+            status switch
+            {
+                "friend" => repValue,
+                "dislike" => -repValue / 2,
+                "hate" => -repValue,
+                _ => 0,
+            };
 
         /// <summary>
         /// The lowest result GivesRep.VaryRep can roll for a kill award:

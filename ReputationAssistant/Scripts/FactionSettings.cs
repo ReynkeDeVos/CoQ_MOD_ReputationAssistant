@@ -38,14 +38,20 @@ namespace Kawa.ReputationAssistant
             // Keys spell spaces as '_'. An id that already has '_', or one that would spell a
             // Templar genotype key ("Templar Mutant"), would borrow another faction's sliders.
             string key = factionName.Replace(' ', '_');
-            return factionName.IndexOf('_', StringComparison.Ordinal) >= 0 || key.StartsWith("Templar_", StringComparison.Ordinal)
+            return
+                factionName.IndexOf('_', StringComparison.Ordinal) >= 0
+                || key.StartsWith("Templar_", StringComparison.Ordinal)
                 ? "Other"
                 : key;
         }
 
         private static int? Read(string key, string setting) =>
-            int.TryParse(Options.GetOption("OptionRA_" + key + "_" + setting),
-                    NumberStyles.Integer, CultureInfo.InvariantCulture, out int value)
+            int.TryParse(
+                Options.GetOption("OptionRA_" + key + "_" + setting),
+                NumberStyles.Integer,
+                CultureInfo.InvariantCulture,
+                out int value
+            )
                 ? value
                 : (int?)null;
     }

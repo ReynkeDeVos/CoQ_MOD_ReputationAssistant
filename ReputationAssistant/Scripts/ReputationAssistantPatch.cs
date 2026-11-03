@@ -21,9 +21,16 @@ using XRL.World.Parts;
 
 namespace Kawa.ReputationAssistant
 {
-    [HarmonyPatch(typeof(Description), nameof(Description.GetLongDescription),
-        new Type[] { typeof(StringBuilder) })]
-    [SuppressMessage("Design", "MA0182", Justification = "Harmony finds the patch through its attribute.")]
+    [HarmonyPatch(
+        typeof(Description),
+        nameof(Description.GetLongDescription),
+        new Type[] { typeof(StringBuilder) }
+    )]
+    [SuppressMessage(
+        "Design",
+        "MA0182",
+        Justification = "Harmony finds the patch through its attribute."
+    )]
     internal static class ReputationAssistantPatch
     {
         private static DateTime s_nextErrorLogAtUtc = DateTime.MinValue;
@@ -45,9 +52,10 @@ namespace Kawa.ReputationAssistant
                 var givesRep = creature.GetPart<GivesRep>();
                 var playerRep = The.Game?.PlayerReputation;
                 bool wrDone = creature.HasIntProperty("WaterRitualed");
-                List<FactionEntry> entries = givesRep is not null && playerRep is not null
-                    ? FactionEntries.Collect(creature, givesRep, playerRep, wrDone)
-                    : null;
+                List<FactionEntry> entries =
+                    givesRep is not null && playerRep is not null
+                        ? FactionEntries.Collect(creature, givesRep, playerRep, wrDone)
+                        : null;
                 bool hasEntries = entries is not null && entries.Count > 0;
 
                 if (ownFactions is null && !hasEntries)
@@ -57,11 +65,15 @@ namespace Kawa.ReputationAssistant
                 ReputationRenderer.RenderSectionHeader(SB, ownFactions, bonded);
 
                 if (hasEntries)
-                    ReputationRenderer.RenderTracker(SB, entries, bonded,
+                    ReputationRenderer.RenderTracker(
+                        SB,
+                        entries,
+                        bonded,
                         showOutcomes: OptionEnabled("OptionRAShowOutcomes"),
                         showWR: !wrDone,
                         compact: OptionEnabled("OptionRACompactLayout"),
-                        showVerdict: OptionEnabled("OptionRAShowKillVerdict"));
+                        showVerdict: OptionEnabled("OptionRAShowKillVerdict")
+                    );
             }
             catch (Exception ex)
             {
@@ -73,14 +85,18 @@ namespace Kawa.ReputationAssistant
                     return;
                 }
 
-                string suppressed = s_suppressedErrorCount > 0
-                    ? FormattableString.Invariant($" (suppressed {s_suppressedErrorCount} similar errors)")
-                    : string.Empty;
+                string suppressed =
+                    s_suppressedErrorCount > 0
+                        ? FormattableString.Invariant(
+                            $" (suppressed {s_suppressedErrorCount} similar errors)"
+                        )
+                        : string.Empty;
                 s_suppressedErrorCount = 0;
                 s_nextErrorLogAtUtc = now.AddSeconds(30);
 
                 UnityEngine.Debug.Log(
-                    $"[ReputationAssistant]{suppressed} {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}");
+                    $"[ReputationAssistant]{suppressed} {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}"
+                );
             }
         }
 
@@ -97,7 +113,9 @@ namespace Kawa.ReputationAssistant
                     continue;
 
                 // Some blueprints list a faction by its display name instead of its id.
-                var faction = Factions.GetIfExists(membership.Key) ?? Factions.GetByDisplayName(membership.Key);
+                var faction =
+                    Factions.GetIfExists(membership.Key)
+                    ?? Factions.GetByDisplayName(membership.Key);
                 if (faction is null || !faction.Visible)
                     continue;
 
